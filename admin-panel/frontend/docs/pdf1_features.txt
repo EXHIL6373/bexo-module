@@ -1,0 +1,501 @@
+=== Page 1 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 1
+ BEXO Web Application
+ Admin Dashboard & College Dashboard
+ Product Features Documentation
+ Feature-focused documentation describing the user-facing capabilities of both web
+ dashboards.
+Document Scope
+This document focuses on what the application provides to administrators and college staff. It intentionally avoids
+technical architecture, database design, APIs, infrastructure, and implementation details.
+Product principle
+The Admin Dashboard provides centralized company-wide control, while the College Dashboard provides a
+simple, college-scoped workspace for managing approved students and services.
+
+
+=== Page 2 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 2
+1. Product Overview
+BEXO Web Application is organized around two primary web experiences: the Admin Dashboard for
+company-level control and the College Dashboard for approved college staff.
+The two dashboards serve different responsibilities but operate as parts of the same platform. The Admin
+Dashboard manages the overall ecosystem of colleges, users, agreements, access, services, students,
+provisioning, notifications and operational oversight. The College Dashboard allows authorized college staff to
+perform day-to-day student and college operations within their permitted scope.
+2. Admin Dashboard — Company Control Center
+Purpose
+The Admin Dashboard is the central control center for the company. It gives authorized company administrators
+visibility and control over colleges, agreements, services, quotas, users, students, access, provisioning activity,
+notifications and important operational events.
+2.1 Executive Dashboard
+  Provides an overall view of the platform's current operating status.
+  Shows college activity such as active, pending, suspended and agreement-expiry situations.
+  Shows student-related activity and recent provisioning activity.
+  Highlights important attention items such as quota limits, agreement or payment due items, failed jobs and security
+ alerts.
+ Provides quick access to important operational areas.
+ 
+2.2 College Management
+  View all colleges managed through the platform.
+  Search and review college records.
+  View college status and operational information.
+  Create or onboard a college after the required approval process.
+  Update college information when authorized.
+  View the college's current access, services and student-related activity.
+  Manage college lifecycle states such as active, pending and suspended.
+  Access the college-specific workspace and operational details.
+ 
+2.3 College Details & Profile
+  Maintain the main college information used by the platform.
+  View the college's contact information and operational status.
+  View associated college staff and administrators.
+  View student counts and service usage.
+  View agreement information, quota information and assigned services.
+  Provide a single place for administrators to understand the current state of a college.
+ 
+2.4 MOU / Agreement Management
+  Maintain the agreement or MOU associated with a college.
+ 
+
+=== Page 3 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 3
+ View agreement status and validity period.
+  Track start and end dates.
+  Keep the related agreement document reference.
+  Identify agreements approaching expiry.
+  Support operational actions around agreement lifecycle.
+  Make agreement status visible when it affects college access or services.
+ 
+2.5 Access Control Center
+  Control which colleges and users are allowed to access platform services.
+  Manage access at the approved college scope.
+  Support department-level and student-limit restrictions where applicable.
+  Allow authorized administrators to approve, change, suspend or revoke access.
+  Provide clear access states such as active, pending and suspended.
+  Ensure a college or user cannot receive access outside the approved scope.
+ 
+2.6 Company Users, Admins & Roles
+  Manage company-side users and operators.
+  Assign appropriate responsibilities and permissions.
+  Control the scope of company operators.
+  Manage college administrators and their college relationship.
+  Review user status and access.
+  Support permission changes and revocation when required.
+ 
+2.7 Student Management
+  View students associated with colleges.
+  Search and review student records.
+  View student status, college, department, roll/enrollment number and email where available.
+  Review whether a student has received eligible service access.
+  Review student provisioning history and access-related activity.
+  Support administrative actions such as access revocation where permitted.
+ 
+2.8 Bulk Student Provisioning
+  Review student provisioning activity across colleges.
+  Monitor provisioning batches and their progress.
+  View successful, failed and partially completed records.
+  Support large-scale student access operations without requiring manual processing of every student.
+  Review validation results and provisioning errors.
+  Track provisioning jobs from creation through completion.
+ 
+2.9 Services & Entitlements
+  Manage the services available through the platform.
+  Assign services to approved colleges.
+ 
+
+=== Page 4 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 4
+ View whether a service is active for a college.
+  Manage student-level entitlements created through college access.
+  Control service availability according to college status and approved policies.
+  Support individual access revocation when required.
+  Ensure student access is based on an active entitlement rather than a permanent free-access flag.
+ 
+2.10 College Suspension & Reactivation
+  Suspend a college when required by company policy or agreement status.
+  Immediately prevent suspended college services from being treated as active.
+  Preserve student accounts, profiles and historical information.
+  Review the impact of suspension.
+  Reactivate a college when eligibility is restored.
+  Restore eligible access according to the applicable service and entitlement rules.
+ 
+2.11 Requests & Approvals
+  Review operational requests that require company approval.
+  Approve or reject eligible requests.
+  Provide visibility into pending approval items.
+  Keep important approval activity traceable.
+  Support controlled access changes rather than allowing unrestricted college-side changes.
+ 
+2.12 Payments & Finance Indicators
+  Provide visibility into payment or finance-related indicators when connected to the applicable business process.
+  Show payment-related attention items.
+  Support visibility of payment status where it affects college operations or agreements.
+  Provide a centralized view for administrators to monitor relevant financial events.
+ 
+2.13 Notifications Center
+  View important platform notifications.
+  Track operational notifications sent to colleges and users.
+  Surface events such as student access granted, provisioning completion, quota warnings, agreement expiry and
+ college suspension.
+ Provide notification history and status for operational follow-up.
+  Support company-level visibility into important communications.
+ 
+2.14 Reports & Analytics
+  Provide operational summaries across colleges and students.
+  Review student provisioning volumes and outcomes.
+  Review service usage and college activity.
+  Identify trends and attention areas.
+  Support management decisions through centralized platform information.
+ 
+2.15 Audit & Security Center
+
+
+=== Page 5 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 5
+ Review important administrative activity.
+  Track who performed an action, what was changed and when it occurred.
+  Review sensitive events such as college lifecycle changes, role changes, quota changes, student provisioning,
+ service changes and security actions.
+ Provide historical visibility for accountability and operational review.
+ 
+2.16 System Health & Operations
+  Provide visibility into important operational conditions.
+  Highlight failed provisioning activity and repeated operational problems.
+  Monitor notification and job-related issues.
+  Surface security or authentication-related alerts.
+  Help administrators identify areas that need attention.
+ 
+2.17 Global Search
+  Provide a central search experience for important platform records.
+  Support searching across colleges, students, administrators and operational records.
+  Make important identifiers easier to locate.
+  Reduce the need to navigate through multiple screens for common administrative tasks.
+ 
+2.18 Admin Profile & Settings
+  Manage the administrator's own profile information.
+  Review account and access information.
+  Provide access to applicable settings and preferences.
+  Support controlled platform configuration where authorized.
+ 
+
+=== Page 6 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 6
+3. College Dashboard — College Operations Workspace
+Purpose
+The College Dashboard is the college-facing web workspace for authorized college staff. Its primary purpose is to
+make student access and college operations simple, clear and low-effort while keeping the college inside the
+access and service scope approved by BEXO.
+The experience is designed around a simple operational journey: Login → Give Student Access → Select
+Range or Upload → Review → Confirm & Grant.
+3.1 College Home Dashboard
+  Shows the college's current operating status.
+  Displays student quota used and remaining.
+  Provides a primary action to give students access.
+  Shows recent provisioning batches.
+  Shows students successfully activated or processed.
+  Highlights quota warnings and failed records that require attention.
+ 
+3.2 Student Management
+  View students belonging to the college.
+  Search and review student information.
+  View student status and access status.
+  Review roll/enrollment number, name, email and department where available.
+  Review student access or entitlement information.
+  Support individual student-level operational actions when permitted.
+ 
+3.3 Give Student Access
+  Provides the main workflow for granting eligible students access to a service.
+  Allows staff to choose a roll-number range or upload student information.
+  Provides a review stage before access is granted.
+  Shows the number of records being processed and any validation issues.
+  Allows staff to confirm and grant access after reviewing the information.
+ 
+3.4 Roll-Number Range Provisioning
+  Allows college staff to provide a range of student roll/enrollment numbers.
+  Validates the selected range before processing.
+  Helps staff grant access to a group of students without manually entering every record.
+  Uses the college's available quota and approved service scope.
+ 
+3.5 Student File Import
+  Allows student data to be provided through supported file formats such as CSV and XLSX.
+  PDF import may be supported where the document can be reliably interpreted.
+  Validates required student information before processing.
+ 
+
+=== Page 7 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 7
+ Shows a preview before final confirmation.
+  Flags ambiguous or invalid records for review rather than silently accepting them.
+ 
+3.6 Import Review & Validation
+  Shows which records are valid and which require correction.
+  Highlights missing required information.
+  Identifies duplicate or conflicting student records.
+  Allows college staff to understand the result before confirming.
+  Prevents an unreviewed import from immediately becoming a student access operation.
+ 
+3.7 Provisioning Jobs
+  Shows the status of student provisioning batches.
+  Allows staff to monitor queued, processing, completed, partially completed, failed or cancelled jobs.
+  Shows successful and failed record counts.
+  Provides visibility into individual failed records and their errors.
+  Allows staff to understand whether the requested student access has been completed.
+ 
+3.8 Services
+  Shows services assigned to the college.
+  Displays service availability and status.
+  Helps staff understand which services can be provided to students.
+  Prevents college staff from independently enabling services outside the approved college scope.
+ 
+3.9 Student Entitlements / Access Status
+  Shows which students have received service access.
+  Displays the current status of student access.
+  Reflects access based on the college's active service and approved entitlement.
+  Supports visibility into individual access status and revocation where permitted.
+ 
+3.10 College Users & Staff
+  Provides visibility into authorized college-side users.
+  Shows relevant administrators, staff or coordinators where applicable.
+  Allows permitted user-management actions within the college's scope.
+  Helps maintain controlled access to college operations.
+ 
+3.11 Requests & Approvals
+  Allows college staff to view requests that require company action.
+  Shows pending, approved and rejected request states.
+  Provides visibility into the status of submitted operational requests.
+  Helps reduce communication gaps between the college and BEXO.
+ 
+3.12 MOU / Agreement View
+  Allows college staff to view relevant agreement information.
+ 
+
+=== Page 8 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 8
+ Shows agreement status and validity dates where permitted.
+  Provides visibility into agreement-related conditions that may affect access.
+  Acts as a reference for the college's current relationship with BEXO.
+ 
+3.13 Billing & Payment View
+  Provides visibility into applicable payment information where this feature is enabled for the college.
+  Shows relevant payment or billing status.
+  Highlights items requiring attention.
+  Does not give college staff company-wide financial control.
+ 
+3.14 Notifications
+  Shows important college notifications.
+  Provides updates about provisioning completion, quota warnings, service changes, agreement events and other
+ operational actions.
+ Helps staff identify items requiring attention.
+  Supports a consistent communication channel between the platform and college staff.
+ 
+3.15 Reports & Analytics
+  Provides college-scoped operational information.
+  Shows student and provisioning summaries.
+  Helps staff understand usage and activity within their college.
+  Does not expose data belonging to other colleges.
+ 
+3.16 Announcements & Events
+  Provides a place for relevant college-facing announcements where enabled.
+  Can surface important platform or college-related events.
+  Helps keep college staff informed about operational updates.
+ 
+3.17 Tasks & Deadlines
+  Shows important college tasks or deadlines where applicable.
+  Highlights overdue or upcoming actions.
+  Supports timely completion of required college operations.
+ 
+3.18 Activity & Audit View
+  Provides college-scoped visibility into important activity.
+  Helps staff understand recent student provisioning and operational actions.
+  Maintains a clear history of relevant actions without exposing company-wide administrative information.
+ 
+3.19 College Settings
+  Provides permitted college-level configuration.
+  Allows authorized staff to maintain applicable college information and preferences.
+  Does not allow settings that would bypass company-level access, quota or service controls.
+ 
+3.20 Profile & Support
+
+
+=== Page 9 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 9
+ Allows staff to manage their own profile information.
+  Provides access to support/help information.
+  Helps college staff resolve operational questions without requiring technical knowledge.
+ 
+3.21 College Search
+  Allows staff to quickly locate students, provisioning records and other records within their permitted college scope.
+  Reduces navigation effort for day-to-day operations.
+ 
+
+=== Page 10 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 10
+4. Admin Dashboard vs College Dashboard
+ Area
+Admin Dashboard
+College Dashboard
+Primary purpose
+Control the complete BEXO college platform
+Operate one approved college
+Scope
+Company-wide
+Single college
+College management
+Create, update, suspend, reactivate and oversee colleges
+View and operate within assigned college
+MOU / agreements
+Manage lifecycle and oversight
+View relevant agreement information
+Users & roles
+Manage company operators and college access
+Manage/view permitted college staff
+Students
+Company-wide visibility and administration
+College-scoped student management
+Provisioning
+Monitor and administer provisioning across colleges
+Submit and monitor college student provisioning
+Services
+Manage services and college assignments
+View assigned services
+Entitlements
+Oversee student access and policy
+View student access status
+Quota
+Set/manage and monitor approved limits
+View usage and remaining quota
+Suspension
+Can suspend/reactivate college
+Cannot independently override company suspension
+Requests
+Review and approve company-controlled requests
+Submit/view requests within scope
+Notifications
+Company-wide operational visibility
+College-specific operational updates
+Reports
+Cross-college reporting and analytics
+College-scoped reporting
+Audit
+Platform-level audit and security oversight
+Relevant college-scoped activity
+Settings
+Platform/company-level settings
+Permitted college-level settings
+5. Key User Journeys
+5.1 Company Admin — College Onboarding
+  Open the Admin Dashboard.
+  Create or review a college record.
+  Complete the required college onboarding information.
+  Review the applicable MOU/agreement.
+  Configure approved quota and services.
+  Provide controlled access to authorized college staff.
+  Monitor the college from the central dashboard.
+ 
+5.2 College Staff — Give Students Access
+  Log in to the College Dashboard.
+  Select Give Student Access.
+  Choose a roll-number range or upload student data.
+  Review validation and preview results.
+  Confirm and grant access.
+  Monitor the provisioning job.
+  Review successful and failed records.
+ 
+
+=== Page 11 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 11
+ Students receive the applicable secure activation communication.
+ 
+5.3 Company Admin — Suspend / Reactivate College
+  Open the relevant college.
+  Review the college's current status and agreement/service information.
+  Suspend the college when authorized.
+  College-provided services become inactive while student records and history remain preserved.
+  Review notifications and affected operational items.
+  Reactivate the college when eligibility is restored.
+  Eligible student access becomes effective again according to the applicable rules.
+ 
+6. Overall Feature Structure
+Admin Dashboard
+  Dashboard / Overview
+  Approval Center
+  Colleges
+  College Details & Lifecycle
+  MOU / Contracts
+  Payments & Finance
+  Access Control
+  Users & Roles
+  Students
+  Bulk Provisioning
+  Services & Entitlements
+  Requests & Approvals
+  Notifications
+  Reports & Analytics
+  Audit & Security
+  System Health
+  Global Search
+  Profile & Settings
+ 
+College Dashboard
+  Dashboard / Overview
+  Students
+  Give Student Access
+  Roll-Number Provisioning
+  Bulk Import
+  Import Review & Validation
+ 
+
+=== Page 12 ===
+BEXO Web Application — Admin & College Dashboard Feature Documentation
+Page 12
+ Provisioning Jobs
+  College Users & Staff
+  Services
+  Student Entitlements / Access Status
+  Requests & Approvals
+  MOU / Agreement
+  Billing & Payments
+  Notifications
+  Reports & Analytics
+  Announcements & Events
+  Tasks & Deadlines
+  Activity & Audit
+  College Settings
+  Profile & Support
+  College-Scoped Search
+ 
+7. Product Experience Principles
+  The Admin Dashboard is designed for control, visibility, governance and operational management.
+  The College Dashboard is designed for simplicity, minimum clicks and day-to-day execution.
+  College staff should not need technical knowledge to provision students.
+  Important actions should provide clear status, confirmation and error information.
+  Company-level controls remain authoritative over college-level operations.
+  College users see only information and actions applicable to their approved college scope.
+  Student access is treated as a controlled entitlement rather than a permanent unrestricted flag.
+  Suspension should affect access while preserving student records and operational history.
+  Large student operations should be easy to start and easy to monitor.
+  Notifications should keep administrators and college staff informed of actions requiring attention.
+ 
+8. Feature Summary
+The BEXO web application therefore consists of two complementary dashboards. The Admin Dashboard is the
+command center for the entire college ecosystem, giving the company control over colleges, agreements, quotas,
+access, users, students, services, provisioning, notifications, reporting and security. The College Dashboard is
+the operational workspace for each approved college, focused on student management, access provisioning,
+service visibility, requests, notifications, reporting and college-specific administration.
+Together, these dashboards provide a clear separation of responsibilities: BEXO controls the platform centrally,
+while colleges operate their approved student workflows within the scope granted to them.
+Document note: This feature documentation is based on the existing Company College Portal product documentation and the
+feature set established for the Admin and College web experiences. Technical implementation details are intentionally excluded.
+
+

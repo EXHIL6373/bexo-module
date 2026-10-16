@@ -1,0 +1,328 @@
+=== Page 1 ===
+BEXO Web Application — Admin Panel Documentation
+Page 1
+ BEXO Web Application
+ Admin Panel — Product Requirements & Feature Documentation
+Version 1.0 | October 2026
+ADMIN PRODUCT PRINCIPLE
+BEXO controls the platform centrally. Approved colleges operate only within the access, service, quota and
+operational scope granted to them.
+
+
+=== Page 2 ===
+BEXO Web Application — Admin Panel Documentation
+Page 2
+Table of Contents
+1. Document Overview
+2. Admin Dashboard Objectives
+3. User Roles and Administrative Scope
+4. Admin Information Architecture
+5. Executive Dashboard
+6. College Management
+7. College Onboarding Workflow
+8. MOU / Agreement Management
+9. Access Control Center
+10. Users, Admins and Roles
+11. Student Management
+12. Bulk Student Provisioning
+13. Services & Entitlements
+14. College Suspension & Reactivation
+15. Requests & Approvals
+16. Payments & Finance Indicators
+17. Notifications Center
+18. Reports & Analytics
+19. Audit & Security Center
+20. System Health & Operations
+21. Global Search
+22. Admin Profile & Settings
+23. Core Admin Workflows
+24. Admin vs College Dashboard Boundary
+25. Product Experience Principles
+26. Functional Requirement Checklist
+27. Recommended MVP Delivery Order
+28. Source and Scope Note
+
+
+=== Page 3 ===
+BEXO Web Application — Admin Panel Documentation
+Page 3
+1. Document Overview
+Purpose: This document defines the functional requirements and feature structure for the BEXO Admin Dashboard.
+The Admin Dashboard is the company-level control center for managing the complete BEXO college ecosystem.
+Scope: The documentation covers administrative capabilities for colleges, agreements, access, users, students,
+provisioning, services, quotas, requests, payments/finance indicators, notifications, reports, audit/security, system
+health, search, profile and settings. Technical architecture, database design, APIs, infrastructure and implementation
+details are intentionally outside this document.
+Product Principle: BEXO controls the platform centrally, while approved colleges operate only within the scope
+granted to them.
+2. Admin Dashboard Objectives
+Primary Objective: Provide authorized BEXO administrators with centralized visibility and control over colleges,
+users, students, agreements, services, access, provisioning and operational events.
+Secondary Objectives: Reduce operational effort; make important exceptions visible; provide controlled approval
+and access workflows; preserve historical activity; and keep company-level controls authoritative over college-level
+operations.
+3. User Roles and Administrative Scope
+Company Administrators: Manage the overall BEXO platform and company-wide operations.
+Company Operators: Perform assigned operational tasks within their approved responsibilities and permissions.
+College Administrators: Represent an approved college and operate only within the college scope assigned by
+BEXO.
+Scope Rule: Company administrators have platform-level authority. College users must not receive information or
+actions outside their approved college scope.
+4. Admin Information Architecture
+Main Navigation: Dashboard; Approval Center; Colleges; MOU / Agreements; Payments & Finance; Access Control;
+Users & Roles; Students; Bulk Provisioning; Services & Entitlements; Requests & Approvals; Notifications; Reports &
+Analytics; Audit & Security; System Health; Global Search; Profile & Settings.
+Navigation Principle: The sidebar should prioritize high-frequency operational areas while keeping governance,
+reporting and security functions clearly separated.
+5. Executive Dashboard
+Purpose: Provide an overall view of the platform's current operating status.
+Key Information: College activity including active, pending, suspended and agreement-expiry situations;
+student-related activity; recent provisioning activity; quota limits; agreement or payment due items; failed jobs; and
+security alerts.
+Quick Actions: Provide direct access to important operational areas such as pending approvals, colleges requiring
+attention, failed provisioning jobs and expiring agreements.
+6. College Management
+Purpose: Manage the complete lifecycle of colleges connected to BEXO.
+
+
+=== Page 4 ===
+BEXO Web Application — Admin Panel Documentation
+Page 4
+College List: Administrators can view all colleges, search college records, review status and operational information,
+and access college-specific details.
+College Actions: Create/onboard a college after the required approval process; update authorized college
+information; view access, services and student activity; change lifecycle state; and open the college-specific
+workspace.
+College Lifecycle: Support states such as Pending, Active and Suspended. The platform must preserve student
+profiles and historical information when a college is suspended.
+College Profile: Maintain contact information, operational status, associated staff and administrators, student counts,
+service usage, agreement information, quota information and assigned services.
+7. College Onboarding Workflow
+Step 1: Create or review the college record.
+Step 2: Complete required college onboarding information.
+Step 3: Review the applicable MOU/agreement.
+Step 4: Configure approved quota and services.
+Step 5: Provide controlled access to authorized college staff.
+Step 6: Monitor the college from the central dashboard.
+Expected Outcome: A college becomes operational only after the required approval, agreement, service, quota and
+access controls are satisfied.
+8. MOU / Agreement Management
+Purpose: Maintain the agreement or MOU associated with a college.
+Requirements: View agreement status and validity period; track start and end dates; retain the related agreement
+document reference; identify agreements approaching expiry; support lifecycle actions; and make agreement status
+visible when it affects college access or services.
+Attention State: Agreements approaching expiry should appear as administrative attention items.
+9. Access Control Center
+Purpose: Control which colleges and users are allowed to access BEXO services.
+Requirements: Manage access at the approved college scope; support department-level and student-limit
+restrictions where applicable; approve, change, suspend or revoke access; expose clear access states such as
+Active, Pending and Suspended; and prevent access outside the approved scope.
+Authority Rule: College-side changes must not bypass company-level access controls.
+10. Users, Admins and Roles
+Company Users: Manage company-side users and operators, assign responsibilities and permissions, control
+operator scope, review user status and revoke or change permissions when required.
+College Users: Manage or oversee college administrators and their relationship to the assigned college.
+Permission Principle: Administrative actions should be limited by role and approved scope.
+11. Student Management
+Purpose: Provide company-wide visibility and administration of students associated with colleges.
+
+
+=== Page 5 ===
+BEXO Web Application — Admin Panel Documentation
+Page 5
+Student Information: Name, college, department, roll/enrollment number, email where available, status and eligible
+service access.
+Actions: Search and review student records; review service access; inspect provisioning history; and perform
+permitted access revocation.
+Scope: Admin users may view and administer student information across colleges according to their permissions.
+12. Bulk Student Provisioning
+Purpose: Support large-scale student access operations without manual processing of every student.
+Requirements: Review provisioning activity across colleges; monitor batches and progress; view successful, failed
+and partially completed records; review validation results and errors; and track provisioning jobs from creation
+through completion.
+Job States: Queued, Processing, Completed, Partially Completed, Failed and Cancelled.
+13. Services & Entitlements
+Services: Manage services available through the platform and assign services to approved colleges.
+College Service Status: Administrators must be able to see whether a service is active for a college and control
+availability according to college status and approved policies.
+Student Entitlements: Manage or oversee student-level entitlements created through college access.
+Access Principle: Student access is based on an active entitlement rather than a permanent unrestricted
+free-access flag.
+14. College Suspension & Reactivation
+Suspension: Administrators can suspend a college when required by company policy or agreement status.
+Impact: Suspended college services must no longer be treated as active, while student accounts, profiles and
+historical information remain preserved.
+Reactivation: Administrators can reactivate a college when eligibility is restored. Eligible student access becomes
+effective again according to applicable service and entitlement rules.
+Operational Review: The administrator should be able to review the impact of suspension and related notifications.
+15. Requests & Approvals
+Purpose: Provide controlled handling of operational requests that require company action.
+Requirements: Review pending requests; approve or reject eligible requests; show pending approval items; preserve
+traceable approval activity; and prevent unrestricted college-side changes.
+States: Pending, Approved and Rejected.
+16. Payments & Finance Indicators
+Purpose: Provide visibility into payment or finance-related indicators when connected to the applicable business
+process.
+Requirements: Show payment-related attention items; provide payment status where it affects college operations or
+agreements; and provide centralized visibility for relevant financial events.
+Scope Note: This document defines visibility and operational indicators, not a complete accounting system.
+
+
+=== Page 6 ===
+BEXO Web Application — Admin Panel Documentation
+Page 6
+17. Notifications Center
+Purpose: Centralize operational notifications for administrators.
+Events: Student access granted, provisioning completion, quota warnings, agreement expiry, college suspension
+and other important operational events.
+Requirements: View notification history, track sent notifications and identify items requiring operational follow-up.
+18. Reports & Analytics
+Purpose: Support management decisions using centralized platform information.
+Reports: Operational summaries across colleges and students; provisioning volumes and outcomes; service usage;
+college activity; trends and attention areas.
+Scope: Admin reporting is company-wide, subject to role permissions.
+19. Audit & Security Center
+Purpose: Provide historical accountability for important administrative actions.
+Audit Data: Who performed an action, what was changed and when it occurred.
+Sensitive Events: College lifecycle changes, role changes, quota changes, student provisioning, service changes
+and security actions.
+Outcome: Administrators can review historical activity for accountability and operational review.
+20. System Health & Operations
+Purpose: Surface important operational conditions and failures.
+Monitoring Areas: Failed provisioning activity, repeated operational problems, notification and job-related issues,
+and security or authentication alerts.
+Outcome: Administrators can quickly identify areas requiring attention.
+21. Global Search
+Purpose: Provide a central search experience for important platform records.
+Search Scope: Colleges, students, administrators and operational records.
+Benefit: Reduce navigation effort and make important identifiers easier to locate.
+22. Admin Profile & Settings
+Profile: Manage administrator profile information and review account/access information.
+Settings: Provide applicable settings and preferences and controlled platform configuration where authorized.
+23. Core Admin Workflows
+College Onboarding: Dashboard → Create/Review College → Complete Information → Review MOU → Configure
+Quota & Services → Add Authorized Staff → Approve → Monitor.
+Suspend / Reactivate: Open College → Review Status/Agreement/Services → Suspend → Services become
+inactive while history is preserved → Review impact → Reactivate when eligible.
+Provisioning Oversight: Open Provisioning → Select College/Job → Review progress → Inspect successful/failed
+records → Review validation errors → Follow up.
+
+
+=== Page 7 ===
+BEXO Web Application — Admin Panel Documentation
+Page 7
+Approval: Open Approval Center → Review request → Verify scope and supporting information → Approve or Reject
+→ Record decision.
+24. Admin vs College Dashboard Boundary
+Admin: Company-wide control over colleges, agreements, users, students, provisioning, services, entitlements,
+quotas, suspension, requests, notifications, reports, audit and settings.
+College: Single-college operation including student management, student access provisioning, assigned services,
+college users, requests, agreement view, notifications, college-scoped reporting and settings.
+Security Principle: College users see only information and actions applicable to their approved college scope.
+25. Product Experience Principles
+Control: The Admin Dashboard is designed for control, visibility, governance and operational management.
+Clarity: Important actions should provide clear status, confirmation and error information.
+Authority: Company-level controls remain authoritative over college-level operations.
+Scope: College users must not see or perform actions outside their approved scope.
+Entitlement: Student access is a controlled entitlement.
+Preservation: Suspension affects access while preserving student records and operational history.
+Scale: Large student operations should be easy to start and monitor.
+Communication: Notifications should keep administrators and college staff informed of actions requiring attention.
+26. Functional Requirement Checklist
+Dashboard: Executive overview, attention items, college activity, student activity, provisioning activity.
+Colleges: List, search, create/onboard, update, lifecycle management, college workspace.
+Agreements: Status, validity, dates, document reference, expiry monitoring.
+Access: Approve/change/suspend/revoke access, scope restrictions.
+Users: Company users, operators, college administrators, roles and permissions.
+Students: Search, status, college, department, roll/enrollment, email, access and history.
+Provisioning: Batches, progress, successful/failed/partial records, validation errors.
+Services: Service catalog, college assignments, active status, entitlements.
+Requests: Pending/approved/rejected workflows and traceability.
+Payments: Payment/finance indicators and attention items.
+Notifications: Operational notifications and history.
+Reports: Cross-college summaries, provisioning, service usage and trends.
+Audit: Who/what/when history and sensitive event tracking.
+System Health: Failed jobs, notifications, operational and security alerts.
+Search: Cross-platform search.
+Settings: Profile, access information and authorized configuration.
+27. Recommended MVP Delivery Order
+
+
+=== Page 8 ===
+BEXO Web Application — Admin Panel Documentation
+Page 8
+Phase 1 — Core Control: Authentication and admin access; Executive Dashboard; Colleges; College Details;
+onboarding; lifecycle; Users & Roles; Students; Services; Quota; Audit.
+Phase 2 — Operations: Provisioning; Approval Center; Requests; Notifications; MOU/Agreements; Access Control.
+Phase 3 — Intelligence & Operations: Reports & Analytics; Payments & Finance indicators; System Health; Global
+Search; advanced settings.
+Delivery Principle: Build the college lifecycle and access/provisioning controls first because they form the core
+operating workflow described by the product documentation.
+28. Source and Scope Note
+Source Basis: Prepared from the supplied BEXO Web Application — Admin Dashboard & College Dashboard
+Product Features Documentation.
+Source Limitation: The source explicitly excludes technical architecture, database design, APIs, infrastructure and
+implementation details. Those areas should be documented separately before development.
+Final Principle: BEXO controls the platform centrally, while colleges operate their approved student workflows within
+the scope granted to them.
+
+
+=== Page 9 ===
+BEXO Web Application — Admin Panel Documentation
+Page 9
+Appendix A — Admin Module Matrix
+Module
+Primary Purpose
+Key Actions
+Dashboard
+Company-wide operating overview
+View activity, alerts, attention items
+Colleges
+Manage college lifecycle
+Create, update, suspend, reactivate, inspect
+Agreements
+Manage MOU lifecycle
+View dates/status, document reference, expiry
+Access Control
+Control platform access
+Approve, change, suspend, revoke
+Users & Roles
+Manage operators and college admins
+Assign permissions, review/revoke access
+Students
+Company-wide student administration
+Search, review, access/revoke where permitted
+Provisioning
+Monitor large student access operations
+Track jobs, outcomes, errors
+Services
+Manage service availability
+Assign services, manage status and entitlements
+Requests
+Handle controlled operational requests
+Review, approve/reject, trace decisions
+Payments
+Show finance indicators
+Payment status and attention items
+Notifications
+Operational communication
+View events and notification history
+Reports
+Management information
+Cross-college activity and trends
+Audit & Security
+Accountability and security
+Who/what/when and sensitive events
+System Health
+Operational monitoring
+Failed jobs, notification issues, security alerts
+Global Search
+Fast record discovery
+Search colleges, students, users and records
+Settings
+Administrative profile/configuration
+Profile, access information, authorized settings
+Source basis: supplied BEXO Web Application — Admin Dashboard & College Dashboard Product Features Documentation. The supplied
+source intentionally excludes technical architecture, database design, APIs, infrastructure and implementation details.
+
+
