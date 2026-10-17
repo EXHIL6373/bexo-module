@@ -1207,6 +1207,62 @@ a {
   display: none;
 }
 
+/* Base Layout Grids */
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.responsive-two-col {
+  display: grid;
+  grid-template-columns: 1.4fr 1.6fr;
+  gap: 22px;
+}
+
+.responsive-two-col-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.quota-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.lifecycle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.lifecycle-item {
+  padding: 14px 16px;
+  background-color: var(--bg-surface-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  min-width: 0;
+}
+
+.lifecycle-legend {
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 1024px) {
   /* Navigation Drawer Controls */
   .mobile-menu-btn {
@@ -1493,10 +1549,53 @@ a {
 
   /* Dual Grid Sections (Provisioning + Activity) */
   .twin-grid-section,
-  div[style*="gridTemplateColumns: '2fr 1fr'"],
-  div[style*="gridTemplateColumns: '1fr 1fr'"] {
+  .dashboard-main-grid,
+  .settings-grid,
+  .responsive-two-col,
+  .responsive-two-col-equal {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 16px !important;
+  }
+
+  .quota-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Lifecycle Distribution & Batches Table */
+  .lifecycle-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .lifecycle-item {
+    padding: 10px 8px !important;
+    min-width: 0 !important;
+  }
+
+  .lifecycle-legend {
+    gap: 8px 14px !important;
+    flex-wrap: wrap !important;
+    font-size: 11px !important;
+  }
+
+  .mobile-hide-col {
+    display: none !important;
+  }
+
+  .table-container table.batches-table,
+  table.batches-table,
+  .batches-table {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .batches-table th,
+  .batches-table td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+    white-space: normal !important;
   }
 
   /* Modals and Wizards */
@@ -1512,8 +1611,17 @@ a {
   }
 }
 
-/* Extra Compact Mobile (max-width: 380px) */
-@media (max-width: 380px) {
+/* Extra Compact Mobile (max-width: 420px) */
+@media (max-width: 420px) {
+  .lifecycle-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .quota-metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .header-search-bar {
     max-width: 130px !important;
   }

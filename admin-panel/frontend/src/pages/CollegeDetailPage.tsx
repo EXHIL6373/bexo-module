@@ -310,7 +310,7 @@ export const CollegeDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1.6fr', gap: '22px' }}>
+          <div className="responsive-two-col">
             {/* Primary Contacts & Admin Card */}
             <div className="card">
               <div className="card-header">
@@ -953,7 +953,7 @@ export const CollegeDetailPage: React.FC = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px', marginTop: '20px' }}>
+              <div className="quota-metrics-grid">
                 <div style={{ padding: '12px 14px', backgroundColor: 'var(--bg-surface-subtle)', borderRadius: '6px' }}>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ALLOCATED</div>
                   <div style={{ fontSize: '18px', fontWeight: 800 }}>{college.quota.allocated.toLocaleString()}</div>
@@ -1025,7 +1025,7 @@ export const CollegeDetailPage: React.FC = () => {
             <StatusBadge status={college.agreement.status} size="md" />
           </div>
           <div className="card-body">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="responsive-two-col-equal">
               <div>
                 <div className="form-group">
                   <label className="form-label">Agreement Reference Number</label>

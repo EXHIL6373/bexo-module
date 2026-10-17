@@ -283,60 +283,32 @@ export const CollegeStudentImportPage: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header */}
-      <div className="page-actions-bar" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="import-page-header">
+        <div className="import-title-col">
+          <div className="import-title-row">
             <button
               onClick={() => navigate('/college/students')}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                color: '#64748B',
-                padding: '4px',
-              }}
+              className="import-back-btn"
+              title="Back to Students"
             >
               <ArrowLeft size={18} />
             </button>
-            <h1 style={{ margin: 0, fontSize: '22px', fontWeight: 800, color: '#0F172A' }}>
+            <h1 className="import-main-heading">
               Bulk Student Import
             </h1>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 800,
-                padding: '2px 8px',
-                borderRadius: '999px',
-                backgroundColor: '#EFF6FF',
-                color: '#2563EB',
-              }}
-            >
+            <span className="import-badge">
               CSV & XLSX
             </span>
           </div>
-          <p style={{ margin: '4px 0 0 28px', fontSize: '13px', color: '#64748B' }}>
+          <p className="import-desc-p">
             Upload, validate, and enroll batches of students for {college?.name || 'Assigned College'}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div className="import-action-col">
           <button
             onClick={handleDownloadTemplate}
-            style={{
-              padding: '9px 16px',
-              borderRadius: '8px',
-              backgroundColor: '#FFFFFF',
-              color: '#334155',
-              border: '1px solid #CBD5E1',
-              fontWeight: 700,
-              fontSize: '13px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
+            className="btn-download-template"
           >
             <Download size={15} />
             <span>Download CSV Template</span>
@@ -395,7 +367,8 @@ export const CollegeStudentImportPage: React.FC = () => {
             1
           </div>
           <span style={{ fontSize: '13px', fontWeight: step === 1 ? 800 : 600, color: step === 1 ? '#0F172A' : '#64748B' }}>
-            Upload File
+            <span className="stepper-step-label-desktop">Upload File</span>
+            <span className="stepper-step-label-mobile">Upload</span>
           </span>
         </div>
 
@@ -419,7 +392,8 @@ export const CollegeStudentImportPage: React.FC = () => {
             2
           </div>
           <span style={{ fontSize: '13px', fontWeight: step === 2 ? 800 : 600, color: step === 2 ? '#0F172A' : '#64748B' }}>
-            Validate & Preview
+            <span className="stepper-step-label-desktop">Validate & Preview</span>
+            <span className="stepper-step-label-mobile">Validate</span>
           </span>
         </div>
 
@@ -443,7 +417,8 @@ export const CollegeStudentImportPage: React.FC = () => {
             3
           </div>
           <span style={{ fontSize: '13px', fontWeight: step === 3 ? 800 : 600, color: step === 3 ? '#0F172A' : '#64748B' }}>
-            Import Results
+            <span className="stepper-step-label-desktop">Import Results</span>
+            <span className="stepper-step-label-mobile">Results</span>
           </span>
         </div>
       </div>

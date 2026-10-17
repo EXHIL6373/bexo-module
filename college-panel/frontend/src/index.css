@@ -1439,6 +1439,115 @@ a {
   div[style*="overflow-x: auto"] table {
     min-width: 760px !important;
   }
+
+  /* Bulk Import Page Responsive */
+  .import-page-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .import-title-row {
+    gap: 8px !important;
+  }
+
+  .import-main-heading {
+    font-size: 18px !important;
+  }
+
+  .import-desc-p {
+    margin: 4px 0 0 0 !important;
+    font-size: 12px !important;
+  }
+
+  .btn-download-template {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .stepper-step-label-desktop {
+    display: none !important;
+  }
+
+  .stepper-step-label-mobile {
+    display: inline !important;
+  }
+}
+
+/* Bulk Import Header & Stepper Base Styles */
+.import-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.import-title-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.import-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.import-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #64748B;
+  padding: 4px;
+}
+
+.import-main-heading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.import-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: #EFF6FF;
+  color: #2563EB;
+  white-space: nowrap;
+}
+
+.import-desc-p {
+  margin: 4px 0 0 28px;
+  font-size: 13px;
+  color: #64748B;
+}
+
+.btn-download-template {
+  padding: 9px 16px;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepper-step-label-desktop {
+  display: inline;
+}
+
+.stepper-step-label-mobile {
+  display: none;
 }
 
 /* Extra Compact Mobile (max-width: 360px) */

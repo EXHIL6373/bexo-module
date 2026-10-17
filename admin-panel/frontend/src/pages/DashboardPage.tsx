@@ -46,6 +46,10 @@ export const DashboardPage: React.FC = () => {
   const pendingColleges = colleges.filter((c) => c.status === 'Pending').length;
   const suspendedColleges = colleges.filter((c) => c.status === 'Suspended').length;
 
+  const activeCollegesPct = totalColleges > 0 ? Math.round((activeColleges / totalColleges) * 100) : 0;
+  const pendingCollegesPct = totalColleges > 0 ? Math.round((pendingColleges / totalColleges) * 100) : 0;
+  const suspendedCollegesPct = totalColleges > 0 ? Math.round((suspendedColleges / totalColleges) * 100) : 0;
+
   const totalStudents = colleges.reduce((sum, c) => sum + c.totalStudents, 0);
   const activeStudents = colleges.reduce((sum, c) => sum + c.activeStudents, 0);
 
@@ -117,7 +121,7 @@ export const DashboardPage: React.FC = () => {
         <StatCard
           label="Active Colleges"
           value={activeColleges}
-          subtext={`${Math.round((activeColleges / totalColleges) * 100)}% operational rate`}
+          subtext={`${activeCollegesPct}% operational rate`}
           icon={CheckCircle2}
           iconBg="#ECFDF5"
           iconColor="#059669"
@@ -287,7 +291,7 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Main Grid: Analytical Breakdown & Recent Activity */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1.2fr', gap: '24px', alignItems: 'start' }}>
+      <div className="dashboard-main-grid">
         {/* Left Column: Visual System Telemetry */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Institutional Activity Breakdown */}
@@ -305,20 +309,20 @@ export const DashboardPage: React.FC = () => {
               </button>
             </div>
             <div className="card-body">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '20px' }}>
-                <div style={{ padding: '12px 16px', backgroundColor: 'var(--bg-surface-subtle)', borderRadius: '8px' }}>
+              <div className="lifecycle-grid">
+                <div className="lifecycle-item">
                   <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>Active Colleges</div>
                   <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-success)', marginTop: '4px' }}>{activeColleges}</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>Operational with live access</div>
                 </div>
 
-                <div style={{ padding: '12px 16px', backgroundColor: 'var(--bg-surface-subtle)', borderRadius: '8px' }}>
+                <div className="lifecycle-item">
                   <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>Pending Clearance</div>
                   <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-warning)', marginTop: '4px' }}>{pendingColleges}</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>Draft / Legal review</div>
                 </div>
 
-                <div style={{ padding: '12px 16px', backgroundColor: 'var(--bg-surface-subtle)', borderRadius: '8px' }}>
+                <div className="lifecycle-item">
                   <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>Suspended Colleges</div>
                   <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-danger)', marginTop: '4px' }}>{suspendedColleges}</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>Services locked; records intact</div>
@@ -327,20 +331,20 @@ export const DashboardPage: React.FC = () => {
 
               {/* Progress bar visual */}
               <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#E2E8F0', marginBottom: '14px' }}>
-                <div style={{ width: `${(activeColleges / totalColleges) * 100}%`, backgroundColor: '#10B981' }} title={`Active: ${activeColleges}`} />
-                <div style={{ width: `${(pendingColleges / totalColleges) * 100}%`, backgroundColor: '#F59E0B' }} title={`Pending: ${pendingColleges}`} />
-                <div style={{ width: `${(suspendedColleges / totalColleges) * 100}%`, backgroundColor: '#EF4444' }} title={`Suspended: ${suspendedColleges}`} />
+                <div style={{ width: `${activeCollegesPct}%`, backgroundColor: '#10B981' }} title={`Active: ${activeColleges}`} />
+                <div style={{ width: `${pendingCollegesPct}%`, backgroundColor: '#F59E0B' }} title={`Pending: ${pendingColleges}`} />
+                <div style={{ width: `${suspendedCollegesPct}%`, backgroundColor: '#EF4444' }} title={`Suspended: ${suspendedColleges}`} />
               </div>
 
-              <div style={{ display: 'flex', gap: '20px', fontSize: '12px', color: 'var(--text-muted)' }}>
+              <div className="lifecycle-legend">
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#10B981' }} /> Active ({Math.round((activeColleges / totalColleges) * 100)}%)
+                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#10B981' }} /> Active ({activeCollegesPct}%)
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#F59E0B' }} /> Pending ({Math.round((pendingColleges / totalColleges) * 100)}%)
+                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#F59E0B' }} /> Pending ({pendingCollegesPct}%)
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#EF4444' }} /> Suspended ({Math.round((suspendedColleges / totalColleges) * 100)}%)
+                  <span style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#EF4444' }} /> Suspended ({suspendedCollegesPct}%)
                 </span>
               </div>
             </div>
@@ -361,14 +365,14 @@ export const DashboardPage: React.FC = () => {
               </button>
             </div>
             <div className="table-container">
-              <table className="enterprise-table">
+              <table className="enterprise-table batches-table">
                 <thead>
                   <tr>
                     <th>Job ID</th>
                     <th>College</th>
-                    <th>Source</th>
+                    <th className="mobile-hide-col">Source</th>
                     <th>Records</th>
-                    <th>Success / Fail</th>
+                    <th className="mobile-hide-col">Success / Fail</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -385,9 +389,9 @@ export const DashboardPage: React.FC = () => {
                       <td>
                         <div style={{ fontWeight: 600 }}>{j.collegeName}</div>
                       </td>
-                      <td style={{ color: 'var(--text-muted)', fontSize: '12px' }}>{j.source}</td>
+                      <td className="mobile-hide-col" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>{j.source}</td>
                       <td>{j.totalRecords.toLocaleString()}</td>
-                      <td>
+                      <td className="mobile-hide-col">
                         <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>{j.successful}</span>
                         {j.failed > 0 && (
                           <span style={{ color: 'var(--color-danger)', fontWeight: 600, marginLeft: '6px' }}>

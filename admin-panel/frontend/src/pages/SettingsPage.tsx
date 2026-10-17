@@ -45,7 +45,7 @@ export const SettingsPage: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '24px' }}>
+      <div className="settings-grid">
         {/* Left: Profile Card */}
         <div className="card">
           <div className="card-header">
