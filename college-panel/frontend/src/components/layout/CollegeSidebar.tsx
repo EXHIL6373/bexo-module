@@ -115,7 +115,7 @@ export const CollegeSidebar: React.FC<CollegeSidebarProps> = ({
 
   const handleNav = (itemPath: string) => {
     navigate(itemPath);
-    if (mobileOpen) setMobileOpen(false);
+    setMobileOpen(false);
   };
 
   return (

@@ -128,6 +128,7 @@ export const CollegeHeader: React.FC<CollegeHeaderProps> = ({ onToggleMobile }) 
                   {college?.code || 'COL-INST'}
                 </span>
                 <span
+                  className="header-status-badge"
                   style={{
                     fontSize: '10px',
                     fontWeight: 800,

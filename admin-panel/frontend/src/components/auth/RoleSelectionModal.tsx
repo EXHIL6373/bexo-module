@@ -69,9 +69,12 @@ export const RoleSelectionModal: React.FC<RoleSelectionModalProps> = ({
       }}
     >
       <div
+        className="role-selection-card"
         style={{
           width: '100%',
           maxWidth: '520px',
+          maxHeight: '90vh',
+          overflowY: 'auto',
           backgroundColor: '#0F172A',
           border: '1px solid rgba(255, 255, 255, 0.12)',
           borderRadius: '24px',

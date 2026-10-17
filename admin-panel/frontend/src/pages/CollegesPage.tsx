@@ -89,7 +89,7 @@ export const CollegesPage: React.FC = () => {
 
       {/* Search & Filter Bar */}
       <div
-        className="card"
+        className="card colleges-filter-bar"
         style={{
           marginBottom: '20px',
           padding: '14px 18px',
@@ -125,13 +125,12 @@ export const CollegesPage: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+        <div className="colleges-filter-selects">
+          <div className="colleges-filter-group">
             <Filter size={14} color="var(--text-muted)" />
             <span>Status:</span>
             <select
               className="form-select"
-              style={{ width: 'auto', padding: '5px 10px', fontSize: '12.5px' }}
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
             >
@@ -142,11 +141,10 @@ export const CollegesPage: React.FC = () => {
             </select>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+          <div className="colleges-filter-group">
             <span>Type:</span>
             <select
               className="form-select"
-              style={{ width: 'auto', padding: '5px 10px', fontSize: '12.5px' }}
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >

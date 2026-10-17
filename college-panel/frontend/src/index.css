@@ -1253,13 +1253,16 @@ a {
 
   /* Compact Header */
   .college-header {
-    padding: 0 12px !important;
+    padding: 0 10px !important;
     height: 58px !important;
     gap: 8px !important;
     justify-content: space-between !important;
   }
 
-  .header-subtitle {
+  .header-subtitle,
+  .quota-header-widget,
+  .header-status-badge,
+  .exit-btn-label {
     display: none !important;
   }
 
@@ -1272,17 +1275,19 @@ a {
   }
 
   .header-user-capsule {
-    padding: 4px 8px !important;
+    padding: 4px 6px !important;
     gap: 4px !important;
   }
 
-  .header-user-capsule span {
+  .user-capsule-text {
     display: none !important;
   }
 
   .header-exit-btn {
-    padding: 6px 10px !important;
-    font-size: 11px !important;
+    padding: 6px !important;
+    width: 32px !important;
+    height: 32px !important;
+    justify-content: center !important;
   }
 
   /* Dashboard Adaptations */
@@ -1331,16 +1336,24 @@ a {
     gap: 12px !important;
   }
 
-  .page-actions-bar > div:last-child {
-    display: flex !important;
-    flex-wrap: wrap !important;
+  .page-actions-bar > div:last-child,
+  .college-actions-btn-group {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     width: 100% !important;
     gap: 8px !important;
   }
 
-  .page-actions-bar button {
-    flex: 1 1 auto !important;
+  .page-actions-bar button,
+  .college-actions-btn-group button {
+    width: 100% !important;
     justify-content: center !important;
+    font-size: 12px !important;
+    padding: 8px 10px !important;
+  }
+
+  .college-actions-btn-group button:last-child {
+    grid-column: span 2 !important;
   }
 
   .page-filter-bar {
@@ -1352,6 +1365,13 @@ a {
   .page-filter-bar > div {
     width: 100% !important;
     min-width: 0 !important;
+  }
+
+  .page-filter-bar > div:last-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
 
   .page-filter-bar input,
@@ -1410,6 +1430,14 @@ a {
     max-width: 100% !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    border-radius: 12px !important;
+  }
+
+  .table-responsive-container table,
+  div[style*="overflowX: auto"] table,
+  div[style*="overflowX: 'auto'"] table,
+  div[style*="overflow-x: auto"] table {
+    min-width: 760px !important;
   }
 }
 

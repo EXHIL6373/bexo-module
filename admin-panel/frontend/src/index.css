@@ -1356,7 +1356,8 @@ a {
     flex-shrink: 0 !important;
   }
 
-  .desktop-user-info {
+  .desktop-user-info,
+  .header-mobile-brand span span {
     display: none !important;
   }
 
@@ -1437,6 +1438,59 @@ a {
     -webkit-overflow-scrolling: touch !important;
   }
 
+  .enterprise-table,
+  .table-container table,
+  .table-responsive-container table {
+    min-width: 820px !important;
+  }
+
+  /* Colleges Filter bar on mobile */
+  .colleges-filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .colleges-filter-selects {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .colleges-filter-group {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    color: var(--text-secondary) !important;
+  }
+
+  .colleges-filter-group select {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    max-width: calc(100% - 65px) !important;
+    font-size: 13px !important;
+    padding: 7px 10px !important;
+  }
+
+  /* Operational Attention Center Header */
+  .attention-center-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  /* Auth page container */
+  .auth-card {
+    padding: 24px 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   /* Dual Grid Sections (Provisioning + Activity) */
   .twin-grid-section,
   div[style*="gridTemplateColumns: '2fr 1fr'"],
@@ -1448,11 +1502,13 @@ a {
   /* Modals and Wizards */
   .modal-card,
   .onboarding-wizard-modal,
-  .wizard-card {
+  .wizard-card,
+  .role-selection-card {
     width: calc(100vw - 20px) !important;
     max-width: calc(100vw - 20px) !important;
     max-height: 90vh !important;
-    padding: 16px !important;
+    overflow-y: auto !important;
+    padding: 18px 16px !important;
   }
 }
 

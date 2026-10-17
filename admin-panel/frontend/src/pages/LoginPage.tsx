@@ -87,6 +87,7 @@ export const LoginPage: React.FC = () => {
       }}
     >
       <div
+        className="auth-card"
         style={{
           width: '100%',
           maxWidth: '460px',

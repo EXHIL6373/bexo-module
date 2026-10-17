@@ -172,7 +172,7 @@ export const CollegeStudentsPage: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+        <div className="college-actions-btn-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
           <button
             onClick={handleExportRoster}
             style={{
