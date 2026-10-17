@@ -7,3 +7,4 @@ export * from './notifications';
 export * from './agreements';
 export * from './activity';
 export * from './auth';
+export * from './identity';

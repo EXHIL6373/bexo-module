@@ -125,6 +125,7 @@ const COLLEGE_ROLE_PERMISSIONS: Record<Role, Set<CollegePermissionAction>> = {
     'VIEW_SERVICES',
     'VIEW_ACTIVITY',
   ]),
+  normal_user: new Set([]),
 };
 
 export function canPerformCollegeAction(role: Role, action: CollegePermissionAction): boolean {
@@ -139,6 +140,8 @@ export function getRoleDisplayName(role: Role): string {
       return 'College Administrator';
     case 'college_coordinator':
       return 'College Coordinator';
+    case 'normal_user':
+      return 'Standard User';
     case 'college_staff':
       return 'College Staff';
     case 'super_admin':

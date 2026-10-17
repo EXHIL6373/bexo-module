@@ -47,7 +47,10 @@ class ApiClient {
   }
 
   public isDemoMode(): boolean {
-    // Demo mode is explicitly activated via VITE_DEMO_MODE=true
+    // Strictly forbid demo mode in production builds
+    if (import.meta.env.PROD || import.meta.env.MODE === 'production') {
+      return false;
+    }
     return import.meta.env.VITE_DEMO_MODE === 'true';
   }
 

@@ -10,6 +10,12 @@ import {
   resetPasswordSchema,
   validateInviteTokenSchema,
   activateAccountSchema,
+  otpRequestSchema,
+  otpVerifySchema,
+  selectRoleSchema,
+  googleVerifySchema,
+  linkAccountSchema,
+  completeGoogleLinkSchema,
 } from './auth.schema';
 
 const router = Router();
@@ -44,6 +50,63 @@ router.post(
   authLimiter,
   validateRequest({ body: activateAccountSchema }),
   authController.activateAccount
+);
+
+// Milestone Guard: Safely disable unfinished Phone OTP & Google endpoints in dev & prod environments
+const disableUnfinishedAuth = (_req: any, res: any, next: any) => {
+  if (process.env.NODE_ENV !== 'test') {
+    return res.status(501).json({
+      success: false,
+      error: 'Authentication method disabled for this milestone. Only Email + Password authentication is supported.',
+    });
+  }
+  next();
+};
+
+// --- PHONE OTP & IDENTITY ENDPOINTS ---
+router.post(
+  '/otp/request',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: otpRequestSchema }),
+  authController.requestOtp
+);
+router.post(
+  '/otp/verify',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: otpVerifySchema }),
+  authController.verifyOtp
+);
+router.post(
+  '/select-role',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: selectRoleSchema }),
+  authController.selectRole
+);
+
+// --- GOOGLE SIGN-IN & ACCOUNT LINKING ENDPOINTS ---
+router.post(
+  '/google/verify',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: googleVerifySchema }),
+  authController.verifyGoogle
+);
+router.post(
+  '/link-account',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: linkAccountSchema }),
+  authController.linkAccount
+);
+router.post(
+  '/google/complete-link',
+  disableUnfinishedAuth,
+  authLimiter,
+  validateRequest({ body: completeGoogleLinkSchema }),
+  authController.completeGoogleLink
 );
 
 export const authRoutes = router;

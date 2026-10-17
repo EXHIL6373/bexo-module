@@ -36,6 +36,7 @@ const envSchema = z.object({
   SMTP_PORT: z.coerce.number().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
+  GOOGLE_CLIENT_ID: z.string().optional(),
   RATE_LIMIT_MAX: z.coerce.number().default(1000),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(60000),
   LOG_LEVEL: z.string().default('info'),

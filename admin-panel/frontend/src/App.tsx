@@ -10,6 +10,7 @@ import { ActivateAccountPage } from './pages/ActivateAccountPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { CorporateAccessDeniedPage } from './pages/CorporateAccessDeniedPage';
+import { ConsumerUserPage } from './pages/ConsumerUserPage';
 
 // Admin Page components
 import { DashboardPage } from './pages/DashboardPage';
@@ -108,6 +109,11 @@ const AppRoutes: React.FC = () => {
   // 2. Unauthenticated Gate: Redirect to login
   if (!isAuthenticated) {
     return <LoginPage />;
+  }
+
+  // 2b. Consumer / Standard User Identity Hub
+  if (path.startsWith('/user') || currentUser?.role === 'normal_user') {
+    return <ConsumerUserPage />;
   }
 
   // 3. Multi-Tenant Route Isolation Gate

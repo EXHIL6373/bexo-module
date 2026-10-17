@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { authService } from './auth.service';
+import { otpService } from './otp.service';
+import { roleDiscoveryService } from './roleDiscovery.service';
+import { googleAuthService } from './googleAuth.service';
 import { sendSuccess } from '../../shared/utils/response';
 
 export class AuthController {
@@ -91,6 +94,109 @@ export class AuthController {
       const { token, password } = req.body;
       const result = await authService.activateAccount(token, password);
       return sendSuccess(res, result, 'Account activated successfully.');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // --- PHONE OTP & IDENTITY FLOW ---
+  async requestOtp(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { phoneNumber, purpose } = req.body;
+      const result = await otpService.requestOtp(phoneNumber, purpose);
+      return sendSuccess(res, result, 'Verification code dispatched successfully.');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyOtp(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { challengeId, otp } = req.body;
+      const verifyRes = await otpService.verifyOtp(challengeId, otp);
+      const discoveryRes = await roleDiscoveryService.discoverRolesForPhone(verifyRes.phoneNumber, req.ip);
+
+      if (discoveryRes.token) {
+        res.cookie('bexo_token', discoveryRes.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+      }
+
+      return sendSuccess(res, discoveryRes, 'Phone number verified.');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async selectRole(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { preAuthToken, selectedRoleId } = req.body;
+      const result = await roleDiscoveryService.selectRole(preAuthToken, selectedRoleId, req.ip);
+
+      if (result.token) {
+        res.cookie('bexo_token', result.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+      }
+
+      return sendSuccess(res, result, 'Role selected successfully.');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // --- GOOGLE SIGN-IN & ACCOUNT LINKING ---
+  async verifyGoogle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { idToken } = req.body;
+      const result = await googleAuthService.authenticateWithGoogle(idToken, req.ip);
+
+      if ((result as any).token) {
+        res.cookie('bexo_token', (result as any).token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+      }
+
+      return sendSuccess(res, result, 'Google identity processed.');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async linkAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { phoneNumber, idToken } = req.body;
+      const result = await googleAuthService.linkGoogleAccount(phoneNumber, idToken);
+      return sendSuccess(res, result, result.message);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async completeGoogleLink(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { preLinkToken, phoneNumber } = req.body;
+      const result = await googleAuthService.completeLinkWithPreLinkToken(preLinkToken, phoneNumber, req.ip);
+
+      if (result.token) {
+        res.cookie('bexo_token', result.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+      }
+
+      return sendSuccess(res, result, 'Account linked and authenticated successfully.');
     } catch (error) {
       next(error);
     }

@@ -179,6 +179,7 @@ export interface AdminContextType {
   changeStaffRole: (staffId: string, newRole: Role) => Promise<void>;
   updateStaffDetails: (staffId: string, updates: Partial<StaffUser>) => Promise<void>;
   login: (email: string, password?: string) => Promise<{ success: boolean; user?: StaffUser; redirectPath: string; error?: string }>;
+  loginWithSession: (token: string, user: any) => Promise<void>;
   logout: () => void;
   updateUserProfile: (updates: { name?: string; phone?: string; designation?: string; department?: string }) => Promise<void>;
   changeUserPassword: (currentPassword: string, newPassword: string) => Promise<{ success: boolean; error?: string }>;
@@ -412,6 +413,15 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (err: any) {
       return { success: false, redirectPath: '/login', error: err.message || 'Authentication error.' };
     }
+  };
+
+  const loginWithSession = async (token: string, user: any) => {
+    apiClient.setToken(token);
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    setActiveScope('company');
+    await refreshData();
+    addToast('success', 'Corporate Session Active', `Welcome, ${user.name || 'User'}`);
   };
 
   const switchToSuperAdmin = (targetId?: string) => {
@@ -900,6 +910,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         changeStaffRole,
         updateStaffDetails,
         login,
+        loginWithSession,
         logout,
         updateUserProfile,
         changeUserPassword,

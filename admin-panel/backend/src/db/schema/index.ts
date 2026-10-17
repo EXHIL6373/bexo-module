@@ -437,3 +437,71 @@ export const lifecycleOutbox = pgTable(
   ]
 );
 
+// =========================================================================
+// 13. IDENTITY REGISTRY, OTP CHALLENGES & ROLE ASSIGNMENTS
+// =========================================================================
+export const otpChallenges = pgTable(
+  'otp_challenges',
+  {
+    id: varchar('id', { length: 128 }).primaryKey(),
+    phoneNumber: varchar('phone_number', { length: 50 }).notNull(),
+    otpHash: text('otp_hash').notNull(),
+    purpose: varchar('purpose', { length: 32 }).notNull().default('login'),
+    attempts: integer('attempts').notNull().default(0),
+    maxAttempts: integer('max_attempts').notNull().default(3),
+    expiresAt: timestamp('expires_at').notNull(),
+    isConsumed: boolean('is_consumed').notNull().default(false),
+    consumedAt: timestamp('consumed_at'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => [
+    index('otp_phone_idx').on(table.phoneNumber),
+    index('otp_expires_idx').on(table.expiresAt),
+  ]
+);
+
+export const userIdentities = pgTable(
+  'user_identities',
+  {
+    id: varchar('id', { length: 128 }).primaryKey(),
+    phoneNumber: varchar('phone_number', { length: 50 }).notNull().unique(),
+    phoneVerifiedAt: timestamp('phone_verified_at').notNull().defaultNow(),
+    googleSub: varchar('google_sub', { length: 128 }).unique(),
+    googleEmail: varchar('google_email', { length: 255 }),
+    googleVerifiedAt: timestamp('google_verified_at'),
+    displayName: varchar('display_name', { length: 255 }),
+    primaryRole: varchar('primary_role', { length: 64 }).notNull().default('normal_user'),
+    status: varchar('status', { length: 32 }).notNull().default('ACTIVE'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('identity_phone_uniq_idx').on(table.phoneNumber),
+    uniqueIndex('identity_google_sub_uniq_idx').on(table.googleSub),
+  ]
+);
+
+export const identityRoleAssignments = pgTable(
+  'identity_role_assignments',
+  {
+    id: varchar('id', { length: 128 }).primaryKey(),
+    identityId: varchar('identity_id', { length: 128 })
+      .notNull()
+      .references(() => userIdentities.id, { onDelete: 'cascade' }),
+    role: varchar('role', { length: 64 }).notNull(),
+    collegeId: varchar('college_id', { length: 128 }),
+    collegeName: varchar('college_name', { length: 255 }),
+    entityId: varchar('entity_id', { length: 128 }),
+    entityType: varchar('entity_type', { length: 64 }).notNull().default('consumer'),
+    isActive: boolean('is_active').notNull().default(true),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => [
+    index('asgn_identity_idx').on(table.identityId),
+    index('asgn_role_idx').on(table.role),
+    index('asgn_college_idx').on(table.collegeId),
+  ]
+);
+
+

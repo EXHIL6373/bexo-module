@@ -14,6 +14,7 @@ import {
   INITIAL_APP_TEMPLATES,
   INITIAL_SERVICES,
 } from './initialData';
+import { normalizePhoneNumber } from '../shared/security/phoneNormalization';
 
 export interface StudentFilters {
   search?: string;
@@ -42,6 +43,9 @@ export class MemoryStore {
   public quotaHistories: any[] = [];
   public templates: any[] = JSON.parse(JSON.stringify(INITIAL_APP_TEMPLATES));
   public platformServices: any[] = JSON.parse(JSON.stringify(INITIAL_SERVICES));
+  public otpChallenges: any[] = [];
+  public userIdentities: any[] = [];
+  public identityRoleAssignments: any[] = [];
 
   constructor() {
     this.initEntitlements();
@@ -1186,6 +1190,119 @@ export class MemoryStore {
     this.auditLogs.unshift(log);
     return log;
   }
+
+  // Identity Registry, OTP Challenges & Role Assignments
+  async createOtpChallenge(challenge: any) {
+    const record = {
+      ...challenge,
+      id: challenge.id || `otp-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      attempts: challenge.attempts ?? 0,
+      maxAttempts: challenge.maxAttempts ?? 3,
+      isConsumed: challenge.isConsumed ?? false,
+      createdAt: challenge.createdAt || new Date().toISOString(),
+    };
+    this.otpChallenges.push(record);
+    return JSON.parse(JSON.stringify(record));
+  }
+
+  async getOtpChallengeById(id: string) {
+    const item = this.otpChallenges.find((c) => c.id === id);
+    return item ? JSON.parse(JSON.stringify(item)) : null;
+  }
+
+  async consumeOtpChallenge(id: string) {
+    const item = this.otpChallenges.find((c) => c.id === id);
+    if (item) {
+      item.isConsumed = true;
+      item.consumedAt = new Date().toISOString();
+    }
+  }
+
+  async incrementOtpAttempts(id: string) {
+    const item = this.otpChallenges.find((c) => c.id === id);
+    if (!item) return 0;
+    item.attempts = (item.attempts || 0) + 1;
+    return item.attempts;
+  }
+
+  async getIdentityByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return null;
+    const item = this.userIdentities.find((u) => u.phoneNumber === norm.e164);
+    return item ? JSON.parse(JSON.stringify(item)) : null;
+  }
+
+  async getIdentityByGoogleSub(googleSub: string) {
+    const item = this.userIdentities.find((u) => u.googleSub === googleSub);
+    return item ? JSON.parse(JSON.stringify(item)) : null;
+  }
+
+  async createIdentity(identity: any) {
+    const id = identity.id || `usr-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const record = {
+      ...identity,
+      id,
+      status: identity.status || 'ACTIVE',
+      createdAt: identity.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    this.userIdentities.push(record);
+    return JSON.parse(JSON.stringify(record));
+  }
+
+  async updateIdentity(id: string, updates: any) {
+    const idx = this.userIdentities.findIndex((u) => u.id === id);
+    if (idx === -1) throw new NotFoundError('User identity not found.');
+    this.userIdentities[idx] = {
+      ...this.userIdentities[idx],
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+    return JSON.parse(JSON.stringify(this.userIdentities[idx]));
+  }
+
+  async getRoleAssignmentsByIdentityId(identityId: string) {
+    return this.identityRoleAssignments
+      .filter((a) => a.identityId === identityId && a.isActive !== false)
+      .map((a) => JSON.parse(JSON.stringify(a)));
+  }
+
+  async createRoleAssignment(assignment: any) {
+    const id = assignment.id || `asgn-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const record = {
+      ...assignment,
+      id,
+      isActive: assignment.isActive !== false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    this.identityRoleAssignments.push(record);
+    return JSON.parse(JSON.stringify(record));
+  }
+
+  async getStaffByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return [];
+    return this.staffUsers
+      .filter((u: any) => {
+        if (!u.phone) return false;
+        const uNorm = normalizePhoneNumber(u.phone);
+        return uNorm.isValid && uNorm.e164 === norm.e164;
+      })
+      .map((u: any) => JSON.parse(JSON.stringify(u)));
+  }
+
+  async getStudentsByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return [];
+    return this.students
+      .filter((s: any) => {
+        if (!s.phone) return false;
+        const sNorm = normalizePhoneNumber(s.phone);
+        return sNorm.isValid && sNorm.e164 === norm.e164;
+      })
+      .map((s: any) => JSON.parse(JSON.stringify(s)));
+  }
 }
 
 export interface Repository {
@@ -1271,6 +1388,19 @@ export interface Repository {
   linkMobileStudent(mobileUserId: string, email: string, phone?: string): Promise<any>;
   getMobileStudentEntitlements(userId: string): Promise<any>;
 
+  // Identity Registry, OTP Challenges & Role Assignments
+  createOtpChallenge(challenge: any): Promise<any>;
+  getOtpChallengeById(id: string): Promise<any | null>;
+  consumeOtpChallenge(id: string): Promise<void>;
+  incrementOtpAttempts(id: string): Promise<number>;
+  getIdentityByPhone(phoneNumber: string): Promise<any | null>;
+  getIdentityByGoogleSub(googleSub: string): Promise<any | null>;
+  createIdentity(identity: any): Promise<any>;
+  updateIdentity(id: string, updates: any): Promise<any>;
+  getRoleAssignmentsByIdentityId(identityId: string): Promise<any[]>;
+  createRoleAssignment(assignment: any): Promise<any>;
+  getStaffByPhone(phoneNumber: string): Promise<any[]>;
+  getStudentsByPhone(phoneNumber: string): Promise<any[]>;
 }
 
 import { DrizzlePostgresRepository } from './postgresRepository';
@@ -1409,6 +1539,19 @@ export class StoreDelegate implements Repository {
   getSystemHealth() { return this.activeStore.getSystemHealth(); }
   linkMobileStudent(studentId: string, mobileUserId: string, authProvider: string) { return this.activeStore.linkMobileStudent(studentId, mobileUserId, authProvider); }
   getMobileStudentEntitlements(mobileUserId: string) { return this.activeStore.getMobileStudentEntitlements(mobileUserId); }
+
+  createOtpChallenge(challenge: any) { return this.activeStore.createOtpChallenge(challenge); }
+  getOtpChallengeById(id: string) { return this.activeStore.getOtpChallengeById(id); }
+  consumeOtpChallenge(id: string) { return this.activeStore.consumeOtpChallenge(id); }
+  incrementOtpAttempts(id: string) { return this.activeStore.incrementOtpAttempts(id); }
+  getIdentityByPhone(phoneNumber: string) { return this.activeStore.getIdentityByPhone(phoneNumber); }
+  getIdentityByGoogleSub(googleSub: string) { return this.activeStore.getIdentityByGoogleSub(googleSub); }
+  createIdentity(identity: any) { return this.activeStore.createIdentity(identity); }
+  updateIdentity(id: string, updates: any) { return this.activeStore.updateIdentity(id, updates); }
+  getRoleAssignmentsByIdentityId(identityId: string) { return this.activeStore.getRoleAssignmentsByIdentityId(identityId); }
+  createRoleAssignment(assignment: any) { return this.activeStore.createRoleAssignment(assignment); }
+  getStaffByPhone(phoneNumber: string) { return this.activeStore.getStaffByPhone(phoneNumber); }
+  getStudentsByPhone(phoneNumber: string) { return this.activeStore.getStudentsByPhone(phoneNumber); }
 }
 
 export const store = new StoreDelegate();

@@ -6,7 +6,8 @@ export type Role =
   | 'support'
   | 'college_admin'
   | 'college_staff'
-  | 'college_coordinator';
+  | 'college_coordinator'
+  | 'normal_user';
 
 export type UserRoleCategory = 'Company' | 'College';
 

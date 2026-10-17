@@ -1,6 +1,7 @@
 /**
  * Authentication Service for BEXO College Panel
- * Handles institutional login, session restore, token validation, password reset & activation.
+ * Handles institutional login, session restore, token validation, password reset & activation,
+ * as well as Phone OTP, Google Sign-In & Role Selection.
  */
 
 import { StaffUser, College, CollegeInvitation } from '../types';
@@ -11,6 +12,39 @@ export interface AuthSessionResponse {
   token: string;
   user: StaffUser;
   college: College;
+}
+
+export interface OtpRequestResponse {
+  challengeId: string;
+  phoneNumber: string;
+  maskedPhoneNumber: string;
+  expiresInSeconds: number;
+  debugOtp?: string;
+}
+
+export interface RolePersona {
+  id: string;
+  role: string;
+  portal: 'admin' | 'college' | 'user';
+  label: string;
+  collegeId?: string | null;
+  collegeName?: string | null;
+  department?: string | null;
+  isDefault?: boolean;
+}
+
+export interface AuthSuccessData {
+  token?: string;
+  user?: StaffUser | any;
+  college?: College | any;
+  requiresRoleSelection?: boolean;
+  preAuthToken?: string;
+  availableRoles?: RolePersona[];
+  requiresPhoneVerification?: boolean;
+  preLinkToken?: string;
+  isLinked?: boolean;
+  phoneNumber?: string;
+  maskedPhoneNumber?: string;
 }
 
 export const authService = {
@@ -140,5 +174,49 @@ export const authService = {
       token,
       newPassword,
     });
+  },
+
+  // --- PHONE OTP, ROLE DISCOVERY & GOOGLE SIGN-IN ---
+
+  async requestOtp(phoneNumber: string, purpose = 'login'): Promise<ApiResponse<OtpRequestResponse>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.requestOtp(phoneNumber, purpose);
+    }
+    return apiClient.post<OtpRequestResponse>('/auth/otp/request', { phoneNumber, purpose });
+  },
+
+  async verifyOtp(challengeId: string, otp: string): Promise<ApiResponse<AuthSuccessData>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.verifyOtp(challengeId, otp);
+    }
+    return apiClient.post<AuthSuccessData>('/auth/otp/verify', { challengeId, otp });
+  },
+
+  async selectRole(preAuthToken: string, selectedRoleId: string): Promise<ApiResponse<AuthSuccessData>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.selectRole(preAuthToken, selectedRoleId);
+    }
+    return apiClient.post<AuthSuccessData>('/auth/select-role', { preAuthToken, selectedRoleId });
+  },
+
+  async verifyGoogle(idToken: string): Promise<ApiResponse<AuthSuccessData>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.verifyGoogle(idToken);
+    }
+    return apiClient.post<AuthSuccessData>('/auth/google/verify', { idToken });
+  },
+
+  async linkAccount(phoneNumber: string, idToken: string): Promise<ApiResponse<{ success: boolean; message: string }>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.linkAccount(phoneNumber, idToken);
+    }
+    return apiClient.post<{ success: boolean; message: string }>('/auth/link-account', { phoneNumber, idToken });
+  },
+
+  async completeGoogleLink(preLinkToken: string, phoneNumber: string): Promise<ApiResponse<AuthSuccessData>> {
+    if (apiClient.isDemoMode()) {
+      return mockAdapter.completeGoogleLink(preLinkToken, phoneNumber);
+    }
+    return apiClient.post<AuthSuccessData>('/auth/google/complete-link', { preLinkToken, phoneNumber });
   },
 };

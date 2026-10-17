@@ -1,8 +1,9 @@
-import { eq, and, desc, sql, ilike } from 'drizzle-orm';
+import { eq, and, desc, sql, ilike, or } from 'drizzle-orm';
 import { db } from './client';
 import * as schema from './schema';
 import { StudentFilters } from './store';
 import { NotFoundError, ConflictError, QuotaExceededError } from '../shared/errors/AppError';
+import { normalizePhoneNumber } from '../shared/security/phoneNormalization';
 
 function toDate(val: any): Date | undefined {
   if (val === undefined || val === null) return undefined;
@@ -1263,5 +1264,171 @@ export class DrizzlePostgresRepository {
       reason: log.reason || null,
     }).returning();
     return res[0];
+  }
+
+  // Identity Registry, OTP Challenges & Role Assignments
+  async createOtpChallenge(challenge: any) {
+    const values = {
+      id: challenge.id || `otp-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      phoneNumber: challenge.phoneNumber,
+      otpHash: challenge.otpHash,
+      purpose: challenge.purpose || 'login',
+      attempts: challenge.attempts ?? 0,
+      maxAttempts: challenge.maxAttempts ?? 3,
+      expiresAt: toDate(challenge.expiresAt) || new Date(Date.now() + 5 * 60 * 1000),
+      isConsumed: challenge.isConsumed ?? false,
+      consumedAt: toDate(challenge.consumedAt),
+      createdAt: toDate(challenge.createdAt) || new Date(),
+    };
+    const res = await db.insert(schema.otpChallenges).values(values).returning();
+    return res[0];
+  }
+
+  async getOtpChallengeById(id: string) {
+    const rows = await db
+      .select()
+      .from(schema.otpChallenges)
+      .where(eq(schema.otpChallenges.id, id))
+      .limit(1);
+    return rows.length > 0 ? rows[0] : null;
+  }
+
+  async consumeOtpChallenge(id: string) {
+    await db
+      .update(schema.otpChallenges)
+      .set({ isConsumed: true, consumedAt: new Date() })
+      .where(eq(schema.otpChallenges.id, id));
+  }
+
+  async incrementOtpAttempts(id: string) {
+    const res = await db
+      .update(schema.otpChallenges)
+      .set({ attempts: sql`${schema.otpChallenges.attempts} + 1` })
+      .where(eq(schema.otpChallenges.id, id))
+      .returning({ attempts: schema.otpChallenges.attempts });
+    return res.length > 0 ? res[0].attempts : 0;
+  }
+
+  async getIdentityByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return null;
+    const rows = await db
+      .select()
+      .from(schema.userIdentities)
+      .where(eq(schema.userIdentities.phoneNumber, norm.e164))
+      .limit(1);
+    return rows.length > 0 ? rows[0] : null;
+  }
+
+  async getIdentityByGoogleSub(googleSub: string) {
+    const rows = await db
+      .select()
+      .from(schema.userIdentities)
+      .where(eq(schema.userIdentities.googleSub, googleSub))
+      .limit(1);
+    return rows.length > 0 ? rows[0] : null;
+  }
+
+  async createIdentity(identity: any) {
+    const values = {
+      id: identity.id || `usr-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      phoneNumber: identity.phoneNumber,
+      phoneVerifiedAt: toDate(identity.phoneVerifiedAt) || new Date(),
+      googleSub: identity.googleSub || null,
+      googleEmail: identity.googleEmail || null,
+      googleVerifiedAt: toDate(identity.googleVerifiedAt) || null,
+      displayName: identity.displayName || null,
+      primaryRole: identity.primaryRole || 'normal_user',
+      status: identity.status || 'ACTIVE',
+      createdAt: toDate(identity.createdAt) || new Date(),
+      updatedAt: new Date(),
+    };
+    const res = await db.insert(schema.userIdentities).values(values).returning();
+    return res[0];
+  }
+
+  async updateIdentity(id: string, updates: any) {
+    const values: any = { ...updates, updatedAt: new Date() };
+    if (values.phoneVerifiedAt) values.phoneVerifiedAt = toDate(values.phoneVerifiedAt);
+    if (values.googleVerifiedAt) values.googleVerifiedAt = toDate(values.googleVerifiedAt);
+    const res = await db
+      .update(schema.userIdentities)
+      .set(values)
+      .where(eq(schema.userIdentities.id, id))
+      .returning();
+    if (res.length === 0) throw new NotFoundError('User identity not found.');
+    return res[0];
+  }
+
+  async getRoleAssignmentsByIdentityId(identityId: string) {
+    return await db
+      .select()
+      .from(schema.identityRoleAssignments)
+      .where(
+        and(
+          eq(schema.identityRoleAssignments.identityId, identityId),
+          eq(schema.identityRoleAssignments.isActive, true)
+        )
+      )
+      .orderBy(desc(schema.identityRoleAssignments.createdAt));
+  }
+
+  async createRoleAssignment(assignment: any) {
+    const values = {
+      id: assignment.id || `asgn-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      identityId: assignment.identityId,
+      role: assignment.role,
+      collegeId: assignment.collegeId || null,
+      collegeName: assignment.collegeName || null,
+      entityId: assignment.entityId || null,
+      entityType: assignment.entityType || 'consumer',
+      isActive: assignment.isActive !== false,
+      createdAt: toDate(assignment.createdAt) || new Date(),
+      updatedAt: new Date(),
+    };
+    const res = await db.insert(schema.identityRoleAssignments).values(values).returning();
+    return res[0];
+  }
+
+  async getStaffByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return [];
+    const digits = norm.e164.replace(/\D/g, '');
+    const national10 = digits.slice(-10);
+    const candidates = await db
+      .select()
+      .from(schema.staffUsers)
+      .where(
+        or(
+          eq(schema.staffUsers.phone, norm.e164),
+          ilike(schema.staffUsers.phone, `%${national10}%`)
+        )
+      );
+    return candidates.filter((u) => {
+      if (!u.phone) return false;
+      const uNorm = normalizePhoneNumber(u.phone);
+      return uNorm.isValid && uNorm.e164 === norm.e164;
+    });
+  }
+
+  async getStudentsByPhone(phoneNumber: string) {
+    const norm = normalizePhoneNumber(phoneNumber);
+    if (!norm.isValid) return [];
+    const digits = norm.e164.replace(/\D/g, '');
+    const national10 = digits.slice(-10);
+    const candidates = await db
+      .select()
+      .from(schema.students)
+      .where(
+        or(
+          eq(schema.students.phone, norm.e164),
+          ilike(schema.students.phone, `%${national10}%`)
+        )
+      );
+    return candidates.filter((s) => {
+      if (!s.phone) return false;
+      const sNorm = normalizePhoneNumber(s.phone);
+      return sNorm.isValid && sNorm.e164 === norm.e164;
+    });
   }
 }

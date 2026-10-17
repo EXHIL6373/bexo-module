@@ -25,6 +25,7 @@ import {
   Building,
   UserCheck,
   LayoutTemplate,
+  X,
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -148,11 +149,20 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         )}
 
         <button
-          className="sidebar-collapse-btn"
+          className="sidebar-collapse-btn desktop-collapse-btn"
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+
+        <button
+          className="mobile-drawer-close-btn"
+          onClick={() => setMobileOpen(false)}
+          title="Close Navigation"
+          aria-label="Close Navigation"
+        >
+          <X size={18} />
         </button>
       </div>
 

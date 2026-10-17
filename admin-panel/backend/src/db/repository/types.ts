@@ -121,5 +121,19 @@ export interface AdminRepository {
   getPendingOutboxEvents(): Promise<any[]>;
   updateOutboxEvent(id: string, updates: any): Promise<any>;
   getOutboxEventsByCollege(collegeId: string): Promise<any[]>;
+
+  // Identity Registry, OTP Challenges & Role Assignments
+  createOtpChallenge(challenge: any): Promise<any>;
+  getOtpChallengeById(id: string): Promise<any | null>;
+  consumeOtpChallenge(id: string): Promise<void>;
+  incrementOtpAttempts(id: string): Promise<number>;
+  getIdentityByPhone(phoneNumber: string): Promise<any | null>;
+  getIdentityByGoogleSub(googleSub: string): Promise<any | null>;
+  createIdentity(identity: any): Promise<any>;
+  updateIdentity(id: string, updates: any): Promise<any>;
+  getRoleAssignmentsByIdentityId(identityId: string): Promise<any[]>;
+  createRoleAssignment(assignment: any): Promise<any>;
+  getStaffByPhone(phoneNumber: string): Promise<any[]>;
+  getStudentsByPhone(phoneNumber: string): Promise<any[]>;
 }
 

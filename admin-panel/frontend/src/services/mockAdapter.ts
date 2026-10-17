@@ -541,6 +541,135 @@ class MockAdapter {
     return { success: true, data: { success: true } };
   }
 
+  // Mock OTP, Role Discovery & Google Auth
+  public async requestOtp(phoneNumber: string, _purpose = 'login'): Promise<ApiResponse<any>> {
+    await this.delay(100);
+    const clean = phoneNumber.trim();
+    const masked = clean.length >= 8 ? `${clean.slice(0, 4)} ****** ${clean.slice(-4)}` : clean;
+    return {
+      success: true,
+      data: {
+        challengeId: `challenge-${Date.now()}`,
+        phoneNumber: clean,
+        maskedPhoneNumber: masked,
+        expiresInSeconds: 300,
+        debugOtp: '123456',
+      },
+    };
+  }
+
+  public async verifyOtp(challengeId: string, otp: string): Promise<ApiResponse<any>> {
+    await this.delay(120);
+    if (otp !== '123456') {
+      throw new ApiError('Invalid OTP verification code. 2 attempts remaining.', 401);
+    }
+
+    // If challengeId indicates multi-role or test scenario
+    if (challengeId.includes('multi')) {
+      return {
+        success: true,
+        data: {
+          requiresRoleSelection: true,
+          preAuthToken: `mock-preauth-${Date.now()}`,
+          availableRoles: [
+            {
+              id: 'role-super-admin',
+              role: 'super_admin',
+              portal: 'admin',
+              label: 'Corporate Administrator (BEXO Headquarters)',
+              isDefault: true,
+            },
+            {
+              id: 'role-college-admin',
+              role: 'college_admin',
+              portal: 'college',
+              label: 'Dean of Technology (PSG Tech)',
+              collegeId: 'clg-psg-01',
+              collegeName: 'PSG College of Technology',
+            },
+            {
+              id: 'role-normal-user',
+              role: 'normal_user',
+              portal: 'user',
+              label: 'Consumer Account',
+            },
+          ],
+        },
+      };
+    }
+
+    // Default corporate admin sign-in in demo mode
+    const adminUser = this.staffUsers[0] || INITIAL_STAFF_USERS[0];
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-admin-${Date.now()}`,
+        user: adminUser,
+        requiresRoleSelection: false,
+      },
+    };
+  }
+
+  public async selectRole(preAuthToken: string, selectedRoleId: string): Promise<ApiResponse<any>> {
+    await this.delay(100);
+    const adminUser = this.staffUsers[0] || INITIAL_STAFF_USERS[0];
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-selected-${Date.now()}`,
+        user: { ...adminUser, role: selectedRoleId.includes('college') ? 'college_admin' : 'super_admin' },
+      },
+    };
+  }
+
+  public async verifyGoogle(idToken: string): Promise<ApiResponse<any>> {
+    await this.delay(150);
+    if (idToken.includes('unlinked')) {
+      return {
+        success: true,
+        data: {
+          isLinked: false,
+          requiresPhoneVerification: true,
+          preLinkToken: `mock-prelink-${Date.now()}`,
+        },
+      };
+    }
+
+    const adminUser = this.staffUsers[0] || INITIAL_STAFF_USERS[0];
+    return {
+      success: true,
+      data: {
+        isLinked: true,
+        token: `mock-jwt-google-${Date.now()}`,
+        user: adminUser,
+      },
+    };
+  }
+
+  public async linkAccount(phoneNumber: string, idToken: string): Promise<ApiResponse<any>> {
+    await this.delay(100);
+    return {
+      success: true,
+      data: {
+        success: true,
+        message: `Account linked to phone ${phoneNumber}`,
+      },
+    };
+  }
+
+  public async completeGoogleLink(preLinkToken: string, phoneNumber: string): Promise<ApiResponse<any>> {
+    await this.delay(120);
+    const adminUser = this.staffUsers[0] || INITIAL_STAFF_USERS[0];
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-linked-${Date.now()}`,
+        user: adminUser,
+        phoneNumber,
+      },
+    };
+  }
+
   // Reset Demo State (In memory only)
   public resetDemoData(): void {
     this.colleges = JSON.parse(JSON.stringify(INITIAL_COLLEGES));
@@ -561,3 +690,4 @@ class MockAdapter {
 }
 
 export const mockAdapter = new MockAdapter();
+

@@ -44,19 +44,30 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
 
   return (
     <header className="app-header">
-      {/* Left: Mobile Toggle & Global Search Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      {/* Left: Mobile Toggle & Brand / Desktop Search Bar */}
+      <div className="header-left-col">
         <button
-          className="icon-btn"
+          className="icon-btn mobile-menu-btn"
           onClick={onToggleMobile}
-          style={{ display: 'none' }}
           id="mobile-nav-toggle"
+          aria-label="Toggle Navigation"
         >
           <Menu size={18} />
         </button>
 
-        <div className="header-search-bar" onClick={() => setIsSearchOpen(true)}>
-          <Search size={16} color="var(--text-muted)" />
+        {/* Mobile / Tablet Brand Mark */}
+        <div className="header-mobile-brand" onClick={() => navigate('/admin')}>
+          <div className="brand-icon-box" style={{ width: '28px', height: '28px', fontSize: '13px', borderRadius: '6px' }}>
+            <span>B</span>
+          </div>
+          <span style={{ fontWeight: 800, fontSize: '14.5px', color: 'var(--text-primary)', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            BEXO <span style={{ fontSize: '9.5px', color: '#2563EB', fontWeight: 800, backgroundColor: '#EFF6FF', padding: '1px 5px', borderRadius: '4px' }}>ADMIN</span>
+          </span>
+        </div>
+
+        {/* Desktop Search Bar */}
+        <div className="header-search-bar desktop-search-bar" onClick={() => setIsSearchOpen(true)}>
+          <Search size={16} color="var(--text-muted)" style={{ flexShrink: 0 }} />
           <span className="search-placeholder-text">Search colleges, students, roll no...</span>
           <span className="kbd-shortcut">Ctrl+K</span>
         </div>
@@ -76,6 +87,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
               border: '1px solid rgba(245, 158, 11, 0.3)',
               letterSpacing: '0.04em',
             }}
+            className="desktop-only-pill"
           >
             <Sparkles size={13} color="#D97706" />
             <span>DEMO MODE ACTIVE</span>
@@ -104,33 +116,31 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
         )}
       </div>
 
-      {/* Right: Scope Switcher, Health, Notifications, Profile */}
+      {/* Right: Mobile Search Icon, Scope Switcher, Health, Notifications, Profile */}
       <div className="header-actions-right">
-        {/* Corporate Authority Indicator */}
+        {/* Mobile Search Button */}
+        <button
+          className="icon-btn mobile-search-btn"
+          onClick={() => setIsSearchOpen(true)}
+          title="Search Platform"
+          aria-label="Search Platform"
+        >
+          <Search size={18} />
+        </button>
+
+        {/* Corporate Authority Indicator (Desktop only) */}
         <div
-          className="scope-pill-btn company-mode"
+          className="scope-pill-btn company-mode desktop-only-pill"
           title="BEXO Central Corporate Administration — Platform-Wide Governance"
         >
           <Globe size={14} color="#2563EB" />
           <span>Company-Wide Authority</span>
         </div>
 
-        {/* Quick System Health Pill */}
+        {/* Quick System Health Pill (Desktop only) */}
         <div
           onClick={() => navigate('/admin/system-health')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '6px 10px',
-            borderRadius: 'var(--radius-pill)',
-            backgroundColor: '#ECFDF5',
-            border: '1px solid #A7F3D0',
-            color: '#059669',
-            fontSize: '11.5px',
-            fontWeight: 700,
-            cursor: 'pointer',
-          }}
+          className="header-health-pill desktop-only-pill"
           title="System Health Telemetry"
         >
           <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }} />
@@ -247,15 +257,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
         <div style={{ position: 'relative' }}>
           <button
             onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '9px',
-              padding: '4px 6px',
-              borderRadius: 'var(--radius-pill)',
-              border: '1px solid var(--border-light)',
-              backgroundColor: 'var(--bg-surface)',
-            }}
+            className="header-user-btn"
           >
             <div
               style={{
@@ -269,11 +271,12 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
                 justifyContent: 'center',
                 fontWeight: 800,
                 fontSize: '13px',
+                flexShrink: 0,
               }}
             >
               {currentUser.name.charAt(0)}
             </div>
-            <div style={{ textAlign: 'left', marginRight: '4px' }}>
+            <div className="header-user-info desktop-user-info" style={{ textAlign: 'left', marginRight: '4px' }}>
               <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, display: 'flex', alignItems: 'center', gap: '4px' }}>
                 {currentUser.name.split(' ')[0]}
                 {currentUser.role === 'super_admin' && <span style={{ fontSize: '11px', color: '#F59E0B' }}>👑</span>}
@@ -289,7 +292,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleMobile }) => {
                 {currentUser.role === 'super_admin' ? 'SUPER ADMIN' : currentUser.role.startsWith('college_') ? 'COLLEGE (DENIED)' : currentUser.role.replace('_', ' ').toUpperCase()}
               </div>
             </div>
-            <ChevronDown size={14} color="#64748B" />
+            <ChevronDown size={14} color="#64748B" className="header-user-chevron desktop-user-info" />
           </button>
 
           {profileDropdownOpen && (

@@ -59,6 +59,10 @@ class MockAdapter {
   private activeToken: string | null = null;
   private activeUser: StaffUser | null = null;
 
+  private delay(ms = 80): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   public setSession(token: string | null, user: StaffUser | null) {
     this.activeToken = token;
     this.activeUser = user ? JSON.parse(JSON.stringify(user)) : null;
@@ -843,6 +847,133 @@ class MockAdapter {
   public getOutboxEmails(): OutboxEmail[] {
     return this.outboxEmails;
   }
+
+  // --- PHONE OTP, ROLE DISCOVERY & GOOGLE AUTH ---
+
+  public async requestOtp(phoneNumber: string, _purpose = 'login'): Promise<any> {
+    await this.delay(100);
+    const clean = phoneNumber.trim();
+    const masked = clean.length >= 8 ? `${clean.slice(0, 4)} ****** ${clean.slice(-4)}` : clean;
+    return {
+      success: true,
+      data: {
+        challengeId: `challenge-${Date.now()}`,
+        phoneNumber: clean,
+        maskedPhoneNumber: masked,
+        expiresInSeconds: 300,
+        debugOtp: '123456',
+      },
+    };
+  }
+
+  public async verifyOtp(challengeId: string, otp: string): Promise<any> {
+    await this.delay(120);
+    if (otp !== '123456') {
+      throw new ApiError('Invalid OTP verification code. 2 attempts remaining.', 401);
+    }
+
+    if (challengeId.includes('multi')) {
+      return {
+        success: true,
+        data: {
+          requiresRoleSelection: true,
+          preAuthToken: `mock-preauth-${Date.now()}`,
+          availableRoles: [
+            {
+              id: 'role-college-admin',
+              role: 'college_admin',
+              portal: 'college',
+              label: 'Dean of Technology (PSG Tech)',
+              collegeId: 'clg-psg-01',
+              collegeName: 'PSG College of Technology',
+              isDefault: true,
+            },
+            {
+              id: 'role-normal-user',
+              role: 'normal_user',
+              portal: 'user',
+              label: 'Consumer Account',
+            },
+          ],
+        },
+      };
+    }
+
+    const { user, college } = this.requireActiveCollege();
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-college-${Date.now()}`,
+        user,
+        college,
+        requiresRoleSelection: false,
+      },
+    };
+  }
+
+  public async selectRole(preAuthToken: string, selectedRoleId: string): Promise<any> {
+    await this.delay(100);
+    const { user, college } = this.requireActiveCollege();
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-selected-${Date.now()}`,
+        user: { ...user, role: selectedRoleId.includes('admin') ? 'college_admin' : 'normal_user' },
+        college,
+      },
+    };
+  }
+
+  public async verifyGoogle(idToken: string): Promise<any> {
+    await this.delay(150);
+    if (idToken.includes('unlinked')) {
+      return {
+        success: true,
+        data: {
+          isLinked: false,
+          requiresPhoneVerification: true,
+          preLinkToken: `mock-prelink-${Date.now()}`,
+        },
+      };
+    }
+
+    const { user, college } = this.requireActiveCollege();
+    return {
+      success: true,
+      data: {
+        isLinked: true,
+        token: `mock-jwt-google-${Date.now()}`,
+        user,
+        college,
+      },
+    };
+  }
+
+  public async linkAccount(phoneNumber: string, idToken: string): Promise<any> {
+    await this.delay(100);
+    return {
+      success: true,
+      data: {
+        success: true,
+        message: `Account linked to phone ${phoneNumber}`,
+      },
+    };
+  }
+
+  public async completeGoogleLink(preLinkToken: string, phoneNumber: string): Promise<any> {
+    await this.delay(120);
+    const { user, college } = this.requireActiveCollege();
+    return {
+      success: true,
+      data: {
+        token: `mock-jwt-linked-${Date.now()}`,
+        user,
+        college,
+        phoneNumber,
+      },
+    };
+  }
 }
 
 export const mockAdapter = new MockAdapter();
+

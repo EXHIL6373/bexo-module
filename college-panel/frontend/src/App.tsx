@@ -9,6 +9,7 @@ import { LoginPage } from './pages/LoginPage';
 import { ActivateAccountPage } from './pages/ActivateAccountPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
+import { ConsumerUserPage } from './pages/ConsumerUserPage';
 
 // College Portal Page components
 import { CollegeDashboardPage } from './pages/college/CollegeDashboardPage';
@@ -97,7 +98,7 @@ const CollegeSubRoutes: React.FC = () => {
 
 const AppRoutes: React.FC = () => {
   const { path } = useRouter();
-  const { isAuthenticated, isLoading } = useCollege();
+  const { isAuthenticated, isLoading, currentUser } = useCollege();
 
   // 1. Standalone Authentication & Onboarding Routes
   if (path.startsWith('/login')) {
@@ -116,6 +117,11 @@ const AppRoutes: React.FC = () => {
   // 2. Unauthenticated Gate: Redirect to /login
   if (!isAuthenticated && !isLoading) {
     return <LoginPage />;
+  }
+
+  // 2b. Consumer / Standard User Identity Hub
+  if (path.startsWith('/user') || currentUser?.role === 'normal_user') {
+    return <ConsumerUserPage />;
   }
 
   // 3. Protected Institutional College Portal Experience

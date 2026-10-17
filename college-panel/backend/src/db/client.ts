@@ -1,9 +1,16 @@
 import fs from 'node:fs';
+import dns from 'node:dns';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { env } from '../config/env';
 import * as schema from './schema';
 import { logger } from '../shared/utils/logger';
+
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch {
+  // Ignore on runtimes without setDefaultResultOrder
+}
 
 const { Pool } = pg;
 

@@ -13,27 +13,32 @@ async function run() {
     const existingTables = existingRes.rows.map((r: any) => r.table_name);
     logger.info({ existingTables }, 'Current tables in Neon database');
 
-    const sqlPath = path.resolve(process.cwd(), 'src/db/migrations/0000_flippant_firebird.sql');
-    const rawSql = fs.readFileSync(sqlPath, 'utf8');
+    const migrationsDir = path.resolve(process.cwd(), 'src/db/migrations');
+    const sqlFiles = fs
+      .readdirSync(migrationsDir)
+      .filter((f) => f.endsWith('.sql'))
+      .sort();
 
-    // Convert CREATE TABLE to CREATE TABLE IF NOT EXISTS
-    const safeSql = rawSql.replace(/CREATE TABLE /gi, 'CREATE TABLE IF NOT EXISTS ');
+    for (const sqlFile of sqlFiles) {
+      const sqlPath = path.join(migrationsDir, sqlFile);
+      const rawSql = fs.readFileSync(sqlPath, 'utf8');
+      const safeSql = rawSql.replace(/CREATE TABLE /gi, 'CREATE TABLE IF NOT EXISTS ');
 
-    const statements = safeSql
-      .split('--> statement-breakpoint')
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+      const statements = safeSql
+        .split('--> statement-breakpoint')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
 
-    logger.info(`Applying ${statements.length} migration statements safely...`);
-    for (const stmt of statements) {
-      try {
-        await client.query(stmt);
-      } catch (stmtErr: any) {
-        // Ignore relation or index already exists
-        if (stmtErr.code === '42P07' || stmtErr.code === '42710') {
-          // Already exists, skip
-        } else {
-          logger.warn({ msg: stmtErr.message, code: stmtErr.code }, 'Statement warning');
+      logger.info(`Applying ${statements.length} migration statements from ${sqlFile}...`);
+      for (const stmt of statements) {
+        try {
+          await client.query(stmt);
+        } catch (stmtErr: any) {
+          if (stmtErr.code === '42P07' || stmtErr.code === '42710') {
+            // Already exists, skip
+          } else {
+            logger.warn({ msg: stmtErr.message, code: stmtErr.code }, `Statement warning in ${sqlFile}`);
+          }
         }
       }
     }

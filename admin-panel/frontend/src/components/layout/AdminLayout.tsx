@@ -13,6 +13,15 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
 
   return (
     <div className="app-container">
+      {/* Mobile Drawer Backdrop */}
+      {mobileOpen && (
+        <div
+          className="admin-sidebar-backdrop"
+          onClick={() => setMobileOpen(false)}
+          aria-label="Close navigation overlay"
+        />
+      )}
+
       {/* Sidebar */}
       <AdminSidebar
         collapsed={collapsed}

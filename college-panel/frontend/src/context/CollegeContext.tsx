@@ -46,6 +46,7 @@ export interface CollegeContextType {
   isCorporateAdmin: boolean;
   canAccessAdminPanel: boolean;
   login: (email: string, password?: string) => Promise<{ success: boolean; user?: StaffUser; redirectPath: string; error?: string }>;
+  loginWithSession: (token: string, user: any, college?: any) => Promise<void>;
   logout: () => Promise<void>;
 
   // Data sets & Scoped Queries
@@ -350,6 +351,18 @@ export const CollegeProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } catch (err: any) {
       return { success: false, redirectPath: '/login', error: err.message || 'Authentication failure.' };
     }
+  };
+
+  const loginWithSession = async (token: string, user: any, college?: any) => {
+    apiClient.setToken(token);
+    setCurrentUser(user);
+    if (college) {
+      setCurrentCollege(college);
+      setColleges([college]);
+    }
+    setIsAuthenticated(true);
+    await refreshCollegeData();
+    addToast('success', 'Session Active', `Welcome, ${user.name || 'User'}`);
   };
 
   const logout = async () => {
@@ -843,6 +856,7 @@ export const CollegeProvider: React.FC<{ children: React.ReactNode }> = ({ child
         isCorporateAdmin: false,
         canAccessAdminPanel: false,
         login,
+        loginWithSession,
         logout,
         students,
         getScopedStudentsForCollege,

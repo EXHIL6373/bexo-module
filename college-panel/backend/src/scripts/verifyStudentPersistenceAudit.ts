@@ -106,7 +106,7 @@ async function runAudit() {
         body: JSON.stringify(payload),
       });
 
-      const json = await res.json();
+      const json = (await res.json()) as any;
       if (res.status !== 201 || !json.data?.id) {
         throw new Error(`Expected HTTP 201, got ${res.status}: ${JSON.stringify(json)}`);
       }
@@ -144,7 +144,7 @@ async function runAudit() {
       const listRes = await fetch(`${baseUrl}/college/students?search=${testRollNumber}`, {
         headers: { Authorization: `Bearer ${psgAdminToken}` },
       });
-      const listJson = await listRes.json();
+      const listJson = (await listRes.json()) as any;
       if (listRes.status !== 200 || !Array.isArray(listJson.data)) {
         throw new Error(`Expected HTTP 200 from list query with data array, got status=${listRes.status}`);
       }
@@ -158,7 +158,7 @@ async function runAudit() {
       const detailRes = await fetch(`${baseUrl}/college/students/${createdStudentId}`, {
         headers: { Authorization: `Bearer ${psgAdminToken}` },
       });
-      const detailJson = await detailRes.json();
+      const detailJson = (await detailRes.json()) as any;
       if (detailRes.status !== 200 || detailJson.data?.id !== createdStudentId) {
         throw new Error(`Expected HTTP 200 from detail query, got ${detailRes.status}`);
       }
@@ -187,7 +187,7 @@ async function runAudit() {
         body: JSON.stringify(dupPayload),
       });
 
-      const json = await res.json();
+      const json = (await res.json()) as any;
       if (res.status !== 409) {
         throw new Error(`Expected HTTP 409 Conflict for duplicate roll number, got ${res.status}: ${JSON.stringify(json)}`);
       }
@@ -201,7 +201,7 @@ async function runAudit() {
         headers: { Authorization: `Bearer ${kctAdminToken}` },
       });
 
-      const json = await res.json();
+      const json = (await res.json()) as any;
       if (res.status !== 403) {
         throw new Error(`Expected HTTP 403 Forbidden when accessing clg-psg-01 student from clg-kct-02, got ${res.status}: ${JSON.stringify(json)}`);
       }
@@ -241,7 +241,7 @@ async function runAudit() {
         body: JSON.stringify(bulkPayload),
       });
 
-      const json = await res.json();
+      const json = (await res.json()) as any;
       if (res.status !== 200 && res.status !== 201) {
         throw new Error(`Expected HTTP 200/201 from bulk import, got ${res.status}: ${JSON.stringify(json)}`);
       }

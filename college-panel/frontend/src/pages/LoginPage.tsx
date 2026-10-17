@@ -11,7 +11,7 @@ import {
   Building2,
   Sparkles,
   AlertCircle,
-  ExternalLink,
+  Shield,
 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -26,20 +26,26 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
+    setErrorMsg('');
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
       setErrorMsg('Please enter your institutional email address.');
+      return;
+    }
+    if (!password) {
+      setErrorMsg('Please enter your password.');
       return;
     }
 
     setIsSubmitting(true);
-    setErrorMsg('');
 
     try {
-      const res = await login(email, password);
+      const res = await login(trimmedEmail, password);
       if (!res.success) {
         setErrorMsg(res.error || 'Authentication failure.');
       } else {
-        navigate(res.redirectPath);
+        navigate(res.redirectPath || '/college/dashboard');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'An unexpected error occurred.');
@@ -48,16 +54,16 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const handleQuickLogin = async (demoEmail: string) => {
+  const handleQuickLogin = async (demoEmail: string, demoPassword = 'ValidPassword123!') => {
     setEmail(demoEmail);
     setPassword('••••••••••••');
     setIsSubmitting(true);
     setErrorMsg('');
 
     try {
-      const res = await login(demoEmail, 'SecureDemoPassword123!');
+      const res = await login(demoEmail, demoPassword);
       if (res.success) {
-        navigate(res.redirectPath);
+        navigate(res.redirectPath || '/college/dashboard');
       } else {
         setErrorMsg(res.error || 'Quick login failed.');
       }
@@ -91,8 +97,8 @@ export const LoginPage: React.FC = () => {
           background: 'rgba(15, 23, 42, 0.85)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: '20px',
-          padding: '36px 30px',
+          borderRadius: '24px',
+          padding: '38px 32px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(37, 99, 235, 0.15)',
         }}
       >
@@ -113,26 +119,28 @@ export const LoginPage: React.FC = () => {
             <span style={{ fontWeight: 900, letterSpacing: '0.05em', color: '#60A5FA', fontSize: '15px' }}>BEXO</span>
             <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#93C5FD' }} />
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#E2E8F0', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Institutional Portal
+              Institutional Gateway
             </span>
           </div>
 
-          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 6px', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-            College Sign In
+          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 8px', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
+            Sign In to BEXO
           </h1>
-          <p style={{ margin: 0, fontSize: '13.5px', color: '#94A3B8' }}>
-            Student Onboarding, Access Governance & Quota Operations
+          <p style={{ margin: 0, fontSize: '13.5px', color: '#94A3B8', lineHeight: 1.5 }}>
+            Unified authentication for Corporate, Campus, and Consumer services.
           </p>
         </div>
 
+        {/* Error Feedback Banner */}
         {errorMsg && (
           <div
+            role="alert"
             style={{
               backgroundColor: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.4)',
               color: '#FCA5A5',
               padding: '12px 14px',
-              borderRadius: '8px',
+              borderRadius: '10px',
               fontSize: '12.5px',
               marginBottom: '20px',
               display: 'flex',
@@ -145,29 +153,45 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          {/* Email */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#CBD5E1', marginBottom: '6px' }}>
+        {/* Direct Email + Password Form */}
+        <form onSubmit={handleSubmit} noValidate>
+          {/* Institutional Email Address */}
+          <div style={{ marginBottom: '18px' }}>
+            <label
+              htmlFor="institutional-email-input"
+              style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#CBD5E1', marginBottom: '8px' }}
+            >
               Institutional Email Address
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                id="institutional-email-input"
                 type="email"
-                placeholder="name@college.edu or name@institution.ac.in"
+                placeholder="name@college.edu or name@psgtech.edu"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
                 style={{
                   width: '100%',
-                  padding: '11px 14px 11px 38px',
-                  borderRadius: '8px',
+                  padding: '12px 14px 12px 38px',
+                  borderRadius: '10px',
                   background: 'rgba(30, 41, 59, 0.9)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
                   color: 'white',
                   fontSize: '13.5px',
                   outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.6)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.2)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 required
+                autoFocus
               />
               <Mail
                 size={16}
@@ -178,33 +202,61 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {/* Password */}
-          <div style={{ marginBottom: '18px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-              <label style={{ fontSize: '12.5px', fontWeight: 700, color: '#CBD5E1' }}>Password</label>
+          <div style={{ marginBottom: '22px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <label
+                htmlFor="college-password-input"
+                style={{ fontSize: '12.5px', fontWeight: 700, color: '#CBD5E1' }}
+              >
+                Password
+              </label>
               <button
                 type="button"
                 onClick={() => navigate('/forgot-password')}
-                style={{ background: 'none', border: 'none', color: '#60A5FA', fontSize: '12px', cursor: 'pointer', padding: 0 }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#60A5FA',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#93C5FD')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#60A5FA')}
               >
                 Forgot Password?
               </button>
             </div>
             <div style={{ position: 'relative' }}>
               <input
+                id="college-password-input"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your account password"
+                placeholder="Enter your institutional password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={isSubmitting}
                 style={{
                   width: '100%',
-                  padding: '11px 40px 11px 38px',
-                  borderRadius: '8px',
+                  padding: '12px 40px 12px 38px',
+                  borderRadius: '10px',
                   background: 'rgba(30, 41, 59, 0.9)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
                   color: 'white',
                   fontSize: '13.5px',
                   outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s',
                 }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.6)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.2)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                required
               />
               <Lock
                 size={16}
@@ -214,6 +266,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 style={{
                   position: 'absolute',
                   right: '10px',
@@ -224,6 +277,9 @@ export const LoginPage: React.FC = () => {
                   color: '#94A3B8',
                   cursor: 'pointer',
                   padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -231,7 +287,7 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Sign In Button */}
+          {/* Sign In to Portal Button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -239,7 +295,9 @@ export const LoginPage: React.FC = () => {
               width: '100%',
               padding: '13px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+              background: isSubmitting
+                ? 'rgba(37, 99, 235, 0.6)'
+                : 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
               color: 'white',
               fontWeight: 700,
               fontSize: '14.5px',
@@ -250,15 +308,28 @@ export const LoginPage: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
+              transition: 'transform 0.15s, box-shadow 0.15s',
+            }}
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = '0 6px 18px rgba(37, 99, 235, 0.5)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSubmitting) {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(37, 99, 235, 0.4)';
+              }
             }}
           >
-            <span>{isSubmitting ? 'Authenticating...' : 'Sign In to College Portal'}</span>
+            <span>{isSubmitting ? 'Authenticating...' : 'Sign In to Portal'}</span>
             <ArrowRight size={16} />
           </button>
         </form>
 
-        {/* Development Persona Switcher - Exclusively College Scoped */}
-        {isDemo && (
+        {/* 1-Click Fast Switcher Demo Personas (strictly development / demo only; hidden in production) */}
+        {isDemo && !(import.meta as any).env?.PROD && (import.meta as any).env?.MODE !== 'production' && (
           <div
             style={{
               marginTop: '28px',
@@ -266,15 +337,28 @@ export const LoginPage: React.FC = () => {
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#93C5FD', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '11px',
+                color: '#93C5FD',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                marginBottom: '10px',
+              }}
+            >
               <Sparkles size={12} />
-              <span>Demo Institutional Personas (Local Test Mode)</span>
+              <span>Fast Switcher Demo Personas</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <button
                 type="button"
                 onClick={() => handleQuickLogin('venkatesh.r@psgtech.edu')}
+                disabled={isSubmitting}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -285,17 +369,18 @@ export const LoginPage: React.FC = () => {
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#E2E8F0',
                   fontSize: '12px',
-                  cursor: 'pointer',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   textAlign: 'left',
                 }}
               >
-                <span>🏛️ Prof. Venkatesh &bull; <strong>PSG Tech (College A)</strong></span>
-                <span style={{ fontSize: '10.5px', color: '#10B981' }}>Active Admin</span>
+                <span>🏛️ Prof. Venkatesh R. &bull; <strong>College Admin</strong></span>
+                <span style={{ fontSize: '10.5px', color: '#60A5FA' }}>&rarr; PSG Tech</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => handleQuickLogin('preetha.s@kct.ac.in')}
+                onClick={() => handleQuickLogin('suresh.coordinator@psgtech.edu')}
+                disabled={isSubmitting}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -306,62 +391,32 @@ export const LoginPage: React.FC = () => {
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#E2E8F0',
                   fontSize: '12px',
-                  cursor: 'pointer',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   textAlign: 'left',
                 }}
               >
-                <span>🏛️ Dr. Preetha &bull; <strong>Kumaraguru (College B)</strong></span>
-                <span style={{ fontSize: '10.5px', color: '#10B981' }}>Active Admin</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('tsridhar@cit.edu.in')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  background: 'rgba(239, 68, 68, 0.08)',
-                  border: '1px solid rgba(239, 68, 68, 0.25)',
-                  color: '#FCA5A5',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <span>⚠️ Dr. Sridhar &bull; <strong>CIT Coimbatore (Suspended)</strong></span>
-                <span style={{ fontSize: '10.5px', color: '#EF4444' }}>Test Rejection</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('kavinbalaji@atbexo.com')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  background: 'rgba(148, 163, 184, 0.08)',
-                  border: '1px solid rgba(148, 163, 184, 0.2)',
-                  color: '#94A3B8',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <span>🚫 Kavinbalaji &bull; <strong>BEXO Corporate Super Admin</strong></span>
-                <span style={{ fontSize: '10.5px', color: '#F59E0B' }}>Test 403 Gate</span>
+                <span>👨‍🏫 Dr. Suresh M. &bull; <strong>Department Coordinator</strong></span>
+                <span style={{ fontSize: '10.5px', color: '#60A5FA' }}>&rarr; /college</span>
               </button>
             </div>
           </div>
         )}
 
-        {/* Footer Notice */}
-        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '11px', color: '#64748B', lineHeight: 1.5 }}>
-          BEXO Enterprise Institutional Control Gateway &bull; Multi-Tenant Isolation Protection Active.
+        {/* Security Disclosures Footer */}
+        <div
+          style={{
+            marginTop: '24px',
+            textAlign: 'center',
+            fontSize: '11.5px',
+            color: '#64748B',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+          }}
+        >
+          <Shield size={12} color="#3B82F6" />
+          <span>Secure authentication &bull; Protected sessions</span>
         </div>
       </div>
     </div>

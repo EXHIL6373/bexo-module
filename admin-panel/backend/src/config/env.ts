@@ -106,6 +106,7 @@ const envSchema = z.object({
   SMTP_PORT: z.coerce.number().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
+  GOOGLE_CLIENT_ID: z.string().optional(),
 });
 
 export function validateEnv(rawEnv: NodeJS.ProcessEnv = process.env) {
