@@ -39,7 +39,7 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div
-        className="modal-dialog"
+        className="modal-dialog template-preview-dialog"
         onClick={(e) => e.stopPropagation()}
         style={{
           maxWidth: '920px',
@@ -52,17 +52,8 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
         }}
       >
         {/* Modal Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '16px 24px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            backgroundColor: '#1E293B',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="template-modal-header">
+          <div className="template-modal-title-box" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div
               style={{
                 width: '34px',
@@ -73,12 +64,13 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'white',
+                flexShrink: 0,
               }}
             >
               <Smartphone size={18} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <span style={{ fontWeight: 800, fontSize: '15px', color: '#FFFFFF' }}>{template.name}</span>
                 <span
                   style={{
@@ -110,15 +102,17 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
                   </span>
                 )}
               </div>
-              <div style={{ fontSize: '11.5px', color: '#94A3B8' }}>
+              <div className="template-modal-subtitle" style={{ fontSize: '11.5px', color: '#94A3B8' }}>
                 BEXO Mobile App Viewport Simulator • Version {template.version} • {template.category.toUpperCase()}
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="template-modal-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <button
+              className="header-mode-toggle"
               onClick={() => setIsDarkMode(!isDarkMode)}
+              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               style={{
                 background: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -152,9 +146,10 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
         </div>
 
         {/* Modal Body: Split view (Phone Mockup + Details Sidebar) */}
-        <div style={{ display: 'flex', flexDirection: 'row', minHeight: '560px' }}>
+        <div className="template-preview-body">
           {/* Left / Center: Interactive Phone Mockup */}
           <div
+            className="template-phone-container"
             style={{
               flex: 1,
               backgroundColor: '#090D16',
@@ -167,6 +162,7 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
           >
             {/* Smartphone Chassis */}
             <div
+              className="template-phone-chassis"
               style={{
                 width: '320px',
                 height: '560px',
@@ -484,8 +480,8 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
 
           {/* Right: Template Metadata & Quick Administrative Controls */}
           <div
+            className="template-preview-sidebar"
             style={{
-              width: '320px',
               backgroundColor: '#1E293B',
               padding: '24px',
               borderLeft: '1px solid rgba(255, 255, 255, 0.1)',

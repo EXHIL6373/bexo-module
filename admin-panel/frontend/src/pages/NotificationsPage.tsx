@@ -146,37 +146,23 @@ export const NotificationsPage: React.FC = () => {
               return (
                 <div
                   key={n.id}
+                  className="notification-item-card"
                   style={{
-                    padding: '16px 20px',
-                    borderBottom: '1px solid var(--border-subtle)',
                     backgroundColor: n.isRead ? 'transparent' : bg,
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between',
-                    gap: '14px',
-                    transition: 'background 120ms',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', flex: 1 }}>
+                  <div className="notification-content-group">
                     <div
+                      className="notification-icon-box"
                       style={{
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '8px',
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
                         color: iconColor,
-                        flexShrink: 0,
-                        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
                       }}
                     >
                       <Icon size={18} />
                     </div>
 
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="notification-title-row">
                         <span style={{ fontWeight: 700, fontSize: '13.5px', color: 'var(--text-primary)' }}>
                           {n.title}
                         </span>
@@ -184,11 +170,11 @@ export const NotificationsPage: React.FC = () => {
                           {n.category}
                         </span>
                         {!n.isRead && (
-                          <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--bexo-blue-600)' }} />
+                          <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--bexo-blue-600)', flexShrink: 0 }} />
                         )}
                       </div>
 
-                      <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                      <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', wordBreak: 'break-word' }}>
                         {n.message}
                       </p>
 
@@ -198,11 +184,11 @@ export const NotificationsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div className="notification-actions">
                     {n.actionUrl && (
                       <button
                         className="btn btn-secondary btn-sm"
-                        style={{ fontSize: '11.5px', padding: '3px 8px' }}
+                        style={{ fontSize: '11.5px', padding: '5px 10px' }}
                         onClick={() => {
                           markNotificationAsRead(n.id);
                           navigate(n.actionUrl!);
@@ -216,21 +202,21 @@ export const NotificationsPage: React.FC = () => {
                     {!n.isRead && (
                       <button
                         className="icon-btn"
-                        style={{ width: '28px', height: '28px' }}
+                        style={{ width: '30px', height: '30px' }}
                         title="Mark as Read"
                         onClick={() => markNotificationAsRead(n.id)}
                       >
-                        <Check size={13} />
+                        <Check size={14} />
                       </button>
                     )}
 
                     <button
                       className="icon-btn"
-                      style={{ width: '28px', height: '28px' }}
+                      style={{ width: '30px', height: '30px' }}
                       title="Clear Notification"
                       onClick={() => clearNotification(n.id)}
                     >
-                      <Trash2 size={13} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>

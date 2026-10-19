@@ -145,17 +145,17 @@ export const CollegeDetailPage: React.FC = () => {
 
       {/* College 360° Header Banner */}
       <div
-        className="card"
+        className="card college-banner-card"
         style={{
           marginBottom: '22px',
-          padding: '24px 28px',
           background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)',
           border: '1px solid var(--border-light)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <div className="college-identity-group" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <div
+              className="college-badge-icon"
               style={{
                 width: '54px',
                 height: '54px',
@@ -168,20 +168,21 @@ export const CollegeDetailPage: React.FC = () => {
                 fontSize: '18px',
                 fontWeight: 800,
                 boxShadow: '0 4px 10px rgba(11, 21, 43, 0.25)',
+                flexShrink: 0,
               }}
             >
               {college.code.slice(0, 4)}
             </div>
 
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <h1 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+              <div className="college-title-status-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', margin: 0 }}>
                   {college.name}
                 </h1>
                 <StatusBadge status={college.status} size="md" />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '6px', fontSize: '12.5px', color: 'var(--text-muted)', flexWrap: 'wrap' }}>
+              <div className="college-meta-details" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '6px', fontSize: '12.5px', color: 'var(--text-muted)', flexWrap: 'wrap' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Building2 size={14} /> Code: <strong>{college.code}</strong>
                 </span>
@@ -197,7 +198,7 @@ export const CollegeDetailPage: React.FC = () => {
           </div>
 
           {/* Quick Header Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="college-header-actions">
             <button className="btn btn-secondary btn-sm" onClick={() => setIsQuotaModalOpen(true)}>
               <Sliders size={14} /> Adjust Quota
             </button>

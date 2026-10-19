@@ -1105,6 +1105,15 @@ a {
   border-bottom: 1px solid var(--border-light);
   margin-bottom: 24px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabs-nav-bar::-webkit-scrollbar {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 .tab-nav-item {
@@ -1261,6 +1270,112 @@ a {
   gap: 18px;
   font-size: 12px;
   color: var(--text-secondary);
+}
+
+/* College Detail Banner & Actions */
+.college-banner-card {
+  padding: 24px 28px;
+}
+.college-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Approval Meta Row & Actions */
+.approval-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.approval-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Template Preview Modal Layout */
+.template-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1E293B;
+  gap: 12px;
+}
+.template-preview-body {
+  display: flex;
+  flex-direction: row;
+  min-height: 560px;
+}
+.template-phone-container {
+  flex: 1;
+  background-color: #090D16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+.template-phone-chassis {
+  width: 320px;
+  height: 560px;
+}
+.template-preview-sidebar {
+  width: 320px;
+  background-color: #1E293B;
+  padding: 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Notification Item Card */
+.notification-item-card {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  transition: background 120ms;
+}
+.notification-content-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.notification-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.notification-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 1024px) {
@@ -1608,6 +1723,136 @@ a {
     max-height: 90vh !important;
     overflow-y: auto !important;
     padding: 18px 16px !important;
+  }
+
+  /* College Detail Mobile Improvements */
+  .college-banner-card {
+    padding: 16px 14px !important;
+  }
+  .college-identity-group {
+    width: 100% !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+  .college-title-status-row h1 {
+    font-size: 18px !important;
+  }
+  .college-meta-details {
+    gap: 8px 12px !important;
+    font-size: 12px !important;
+  }
+  .college-header-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-top: 14px !important;
+  }
+  .college-header-actions button {
+    width: 100% !important;
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+    justify-content: center !important;
+  }
+  .college-header-actions button:last-child {
+    grid-column: span 2 !important;
+  }
+
+  /* Approval Center Mobile Improvements */
+  .approval-meta-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px !important;
+    margin-top: 8px !important;
+    font-size: 11.5px !important;
+  }
+  .approval-meta-row .meta-dot {
+    display: none !important;
+  }
+  .approval-card-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 2fr !important;
+    gap: 8px !important;
+    margin-top: 14px !important;
+  }
+  .approval-card-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Template Preview Modal Mobile Improvements */
+  .template-preview-dialog {
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    width: calc(100vw - 16px) !important;
+    margin: 8px auto !important;
+    border-radius: 12px !important;
+  }
+  .template-modal-header {
+    padding: 12px 14px !important;
+    gap: 8px !important;
+  }
+  .template-modal-header .header-mode-toggle span {
+    display: none !important;
+  }
+  .template-modal-header .header-mode-toggle {
+    padding: 6px 8px !important;
+  }
+  .template-modal-title-box {
+    max-width: calc(100% - 90px) !important;
+  }
+  .template-modal-title-box span {
+    font-size: 13.5px !important;
+  }
+  .template-modal-subtitle {
+    font-size: 10px !important;
+    word-break: break-word !important;
+  }
+  .template-preview-body {
+    flex-direction: column !important;
+    min-height: auto !important;
+  }
+  .template-phone-container {
+    padding: 16px 8px !important;
+    width: 100% !important;
+  }
+  .template-phone-chassis {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: 500px !important;
+    border-radius: 28px !important;
+    border-width: 6px !important;
+  }
+  .template-preview-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 14px !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Notifications Card Mobile Improvements */
+  .notification-item-card {
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 14px 14px !important;
+  }
+  .notification-content-group {
+    width: 100% !important;
+  }
+  .notification-actions {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed var(--border-subtle) !important;
+    gap: 8px !important;
+  }
+  .notification-actions .btn {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
   }
 }
 

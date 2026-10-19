@@ -1472,6 +1472,27 @@ a {
   .stepper-step-label-mobile {
     display: inline !important;
   }
+
+  /* Notifications Card Mobile Improvements */
+  .notification-item-card {
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 14px 14px !important;
+  }
+  .notification-content-group {
+    width: 100% !important;
+  }
+  .notification-actions {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed var(--border-subtle) !important;
+    gap: 8px !important;
+  }
+  .notification-actions .btn {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+  }
 }
 
 /* Bulk Import Header & Stepper Base Styles */
@@ -1548,6 +1569,62 @@ a {
 
 .stepper-step-label-mobile {
   display: none;
+}
+
+/* Tabs Scrollbar Hide */
+.tabs-nav-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tabs-nav-bar::-webkit-scrollbar {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* Notification Item Card Base Styles */
+.notification-item-card {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  transition: background 120ms;
+}
+
+.notification-content-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.notification-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 /* Extra Compact Mobile (max-width: 360px) */

@@ -146,13 +146,13 @@ export const ApprovalsPage: React.FC = () => {
                         </span>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                      <div className="approval-meta-row">
                         <span>Request ID: <strong>{req.id}</strong></span>
-                        <span>•</span>
+                        <span className="meta-dot">•</span>
                         <span>College: <strong>{req.collegeName}</strong></span>
-                        <span>•</span>
+                        <span className="meta-dot">•</span>
                         <span>Requester: {req.requester} ({req.requesterRole})</span>
-                        <span>•</span>
+                        <span className="meta-dot">•</span>
                         <span>{new Date(req.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                       </div>
                     </div>
@@ -160,7 +160,7 @@ export const ApprovalsPage: React.FC = () => {
 
                   {/* Action Buttons if Pending */}
                   {isPending && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="approval-card-actions">
                       <button
                         className="btn btn-secondary btn-sm"
                         style={{ color: 'var(--color-danger)' }}
